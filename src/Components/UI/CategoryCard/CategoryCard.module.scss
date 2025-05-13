@@ -1,0 +1,66 @@
+@use 'sass:color';
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.categoryCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.imgTitle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $white;
+  gap: 8px;
+  padding: 20px 15px 40px;
+  border-top-right-radius: 40px;
+  border-top-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 40px;
+  @include card-shadow;
+  @include respond-lg {
+    padding: 0 15px 45px;
+  }
+  @include respond-md {
+    padding: 0 15px 30px;
+  }
+  @include respond-sm {
+    padding: 0 15px 30px;
+  }
+}
+
+.categImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.categTitle {
+  font-size: $font-md;
+  font-weight: $weight-bold;
+  color: $text-color;
+  @include respond-md {
+    font-size: 12px;
+  }
+}
+
+.buttonsWrapper {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 10px;
+}
+
+.icon {
+  font-size: 1rem;
+  color: $primary-color;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+    color: color.scale($primary-color, $lightness: -10%);
+  }
+}

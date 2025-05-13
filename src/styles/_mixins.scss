@@ -1,0 +1,76 @@
+@use "./variables" as *;
+
+// === Centarized  ===
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin card-shadow {
+  box-shadow: 0 12px 18px rgba(0, 0, 0, 0.08);
+}
+
+// === Title Style ===
+@mixin section-title {
+  font-size: $font-xl;
+  font-weight: $weight-bold;
+  color: $primary-color;
+  text-align: center;
+  margin-bottom: $space-md;
+}
+
+// === Responsive ===
+$break-sm: 576px;
+$break-md: 768px;
+$break-lg: 992px;
+$break-xl: 1200px;
+
+@mixin respond-sm {
+  @media (max-width: $break-sm) {
+    @content;
+  }
+}
+@mixin respond-md {
+  @media (max-width: $break-md) {
+    @content;
+  }
+}
+@mixin respond-lg {
+  @media (max-width: $break-lg) {
+    @content;
+  }
+}
+@mixin respond-xl {
+  @media (max-width: $break-xl) {
+    @content;
+  }
+}
+
+// === Grid Responsive ===
+@mixin grid-columns($count) {
+  display: grid;
+  grid-template-columns: repeat($count, 1fr);
+  gap: $space-md;
+
+  @include respond-lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include respond-md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-sm {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.center-if-few { min-height: 60vh; @include flex-center; }

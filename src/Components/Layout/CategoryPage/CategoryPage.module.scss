@@ -1,0 +1,10 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.categoryPage {
+  padding: $space-lg 0 0; 
+}
+
+.pageTitle {
+  @include section-title;
+}

@@ -1,0 +1,36 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 120px;
+  margin-bottom: 5px;
+  font-size: 14px;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+  border-top-color: #eeeeee;
+  border-bottom-color: #eeeeee;
+  border-bottom-style: solid;
+  border-top-style: solid;
+  @include respond-md {
+    padding: 4px 30px;
+  }
+}
+
+.left,
+.right {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+
+  @include respond-md {
+    font-size: 11px;
+  }
+  @include respond-sm {
+    font-size: 10px;
+  }
+}

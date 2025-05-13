@@ -1,0 +1,145 @@
+@use "@/styles/mixins" as *;
+@use "@/styles/variables" as *;
+
+.navbar {
+  position: relative;
+  width: 100%;
+  max-width: $container-max-width;
+  margin: 0 auto;
+  background-color: $background-color;
+  padding: $space-md 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: $space-md;
+}
+
+.logoContainer {
+  @include flex-center;
+  flex: 1;
+}
+
+.logo {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+
+  @include respond-md {
+    width: 100px;
+  }
+}
+
+.icon {
+  color: $primary-color;
+  width: 26px;
+  height: 26px;
+
+  @include respond-md {
+    width: 27px;
+    height: 27px;
+  }
+
+  @include respond-sm {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+.iconBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  @include flex-center;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.04);
+  }
+
+  @include respond-sm {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.leftIcons .iconBtn {
+  width: 32px;
+  height: 32px;
+  border: 2.2px solid $primary-color;
+  border-radius: $radius-full;
+  padding: 3.5px;
+
+  @include respond-md {
+    width: 30px;
+    height: 30px;
+  }
+
+  @include respond-sm {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.leftIcons {
+  margin-left: 10px;
+  gap: 12px;
+}
+
+.rightIcons {
+  margin-right: 10px;
+  gap: 10px;
+
+  @include respond-md {
+    gap: 5px;
+  }
+}
+
+.leftIcons,
+.rightIcons {
+  display: flex;
+  align-items: center;
+}
+
+.StarImg,
+.newImg {
+  width: 33px;
+  height: 33px;
+
+  @include respond-md {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.sideLineLeft,
+.sideLineRight {
+  position: absolute;
+  top: 100%;
+  transform: translateY(-40px);
+  width: 350px;
+  height: 1.8px;
+  background-color: $border-color;
+  border-radius: 6px;
+
+  @include respond-lg {
+    width: 250px;
+  }
+
+  @include respond-md {
+    width: 150px;
+    height: 2.5px;
+    transform: translateY(-25px);
+  }
+
+  @include respond-sm {
+    width: 100px;
+  }
+}
+
+.sideLineLeft {
+  left: 0;
+}
+
+.sideLineRight {
+  right: 0;
+}

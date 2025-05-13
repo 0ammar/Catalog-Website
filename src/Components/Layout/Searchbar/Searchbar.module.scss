@@ -1,0 +1,70 @@
+@use "@/styles/mixins" as *;
+@use "@/styles/variables" as *;
+
+.searchBar {
+  @include flex-center;
+  @include card-shadow;
+  background-color: $white;
+  padding: 2px $space-md;
+  border: 1px solid $border-color;
+  border-top-left-radius: 35px;
+  border-bottom-right-radius: 35px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  @include respond-md {
+    max-width: 450px;
+    padding: 0 $space-md;
+  }
+}
+
+.inputField {
+  flex: 1;
+  height: 40px;
+  line-height: 40px;
+  border: none;
+  outline: none;
+  font-size: $font-md;
+  background-color: transparent;
+  color: $text-color;
+  direction: rtl;
+  padding: 0;
+  padding-left: $space-md;
+  padding-right: 30px;
+  transition: box-shadow 0.2s ease, border 0.2s ease;
+
+  @include respond-md {
+    font-size: 15px;
+  }
+
+  &::placeholder {
+    color: $muted-text-color;
+    font-size: $font-md;
+
+    @include respond-md {
+      font-size: 15px;
+    }
+  }
+}
+
+.searchButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  height: 30px;
+  @include flex-center;
+}
+
+.searchIcon {
+  font-size: 1.25rem;
+  color: $muted-text-color;
+}
+
+.centerWrapper {
+  @include absolute-center;
+  width: 100%;
+  padding: $space-md;
+}
