@@ -6,7 +6,7 @@
   margin: $space-lg auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: $space-sm;
+  gap: $space-lg;
 
   @include respond-lg {
     grid-template-columns: repeat(3, 1fr);
