@@ -3,7 +3,7 @@
 
 .categoryGrid {
   width: 100%;
-  margin: $space-lg auto $space-md;
+  margin: $space-md auto $space-md;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: $space-lg;

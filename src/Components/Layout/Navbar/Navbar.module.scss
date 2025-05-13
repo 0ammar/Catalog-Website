@@ -7,7 +7,7 @@
   max-width: $container-max-width;
   margin: 0 auto;
   background-color: $background-color;
-  padding: 0 0 $space-sm;
+  padding: 4px 0 $space-sm;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -25,7 +25,10 @@
   object-fit: contain;
 
   @include respond-md {
-    width: 100px;
+    width: 90px;
+  }
+  @include respond-sm {
+    width: 70px;
   }
 }
 
@@ -40,8 +43,8 @@
   }
 
   @include respond-sm {
-    width: 25px;
-    height: 25px;
+    width: 22px;
+    height: 22px;
   }
 }
 
@@ -75,8 +78,8 @@
   }
 
   @include respond-sm {
-    width: 28px;
-    height: 28px;
+    width: 23px;
+    height: 23px;
   }
 }
 
@@ -106,8 +109,8 @@
   height: 33px;
 
   @include respond-md {
-    width: 28px;
-    height: 28px;
+    width: 23px;
+    height: 23px;
   }
 }
 
@@ -128,7 +131,7 @@
   @include respond-md {
     width: 150px;
     height: 2.5px;
-    transform: translateY(-20px);
+    transform: translateY(-10px);
   }
 
   @include respond-sm {
