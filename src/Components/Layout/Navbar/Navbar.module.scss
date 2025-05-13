@@ -115,9 +115,9 @@
 .sideLineRight {
   position: absolute;
   top: 100%;
-  transform: translateY(-40px);
+  transform: translateY(-35px);
   width: 350px;
-  height: 1.8px;
+  height: 2.8px;
   background-color: $border-color;
   border-radius: 6px;
 
@@ -128,7 +128,7 @@
   @include respond-md {
     width: 150px;
     height: 2.5px;
-    transform: translateY(-25px);
+    transform: translateY(-20px);
   }
 
   @include respond-sm {
