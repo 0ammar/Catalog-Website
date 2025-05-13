@@ -6,8 +6,7 @@
   max-width: $container-max-width;
   margin-inline: auto;
   padding-inline: $space-md;
-
-  @include respond-sm {
-    padding-inline: $space-sm;
+  @include respond-md {
+    padding-inline: $space-md;
   }
 }
