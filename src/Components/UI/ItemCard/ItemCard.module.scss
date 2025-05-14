@@ -1,0 +1,66 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.itemCard {
+  background-color: $white;
+  border-radius: 20px;
+  padding: $space-sm;
+  @include card-shadow;
+  position: relative;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-lg;
+}
+
+.imageWrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.name {
+  font-size: $font-lg;
+  font-weight: $weight-medium;
+  color: $text-color;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @include respond-md {
+    font-size: $font-md;
+  }
+}
+
+.itemNumber {
+  font-size: $font-sm/1.1;
+  color: $primary-color;
+  @include respond-md {
+    font-size: $font-sm/1.3;
+  }
+}
+
+.statusIcon {
+  position: absolute;
+  bottom: $space-sm;
+  left: $space-md;
+  color: $primary-color;
+  font-size: 1.1rem;
+  @include respond-md {
+    bottom: 0.4px;
+    left: 9px;
+  }
+}

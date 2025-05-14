@@ -9,17 +9,17 @@ type Props = {
 
 export default function CategoryPage({ path }: Props) {
     const currentLevel =
-        path.length === 1 ? 'group'
-            : path.length === 2 ? 'subOne'
-                : path.length === 3 ? 'subTwo'
-                    : path.length === 4 ? 'subThree'
+        path.length === 1 ? 'المجموعة 1'
+            : path.length === 2 ? 'المجموعة 2'
+                : path.length === 3 ? 'المجموعة 3'
+                    : path.length === 4 ? 'المجموعة 4'
                         : null;
 
     if (!currentLevel) return <div>Invalid path</div>;
 
     return (
         <main className={styles.categoryPage}>
-            <h1 className={styles.pageTitle}>{`Level: ${currentLevel}`}</h1>
+            <h1 className={styles.pageTitle}>{`${currentLevel}`}</h1>
             <CategoryGrid />
         </main>
     );

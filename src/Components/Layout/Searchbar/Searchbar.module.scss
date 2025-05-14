@@ -5,51 +5,46 @@
   @include flex-center;
   @include card-shadow;
   background-color: $white;
-  padding: 2px $space-md;
   border: 1px solid $border-color;
-  border-top-left-radius: 35px;
-  border-bottom-right-radius: 35px;
-  border-top-right-radius: 10px;
-  border-bottom-left-radius: 10px;
+  border-radius: $radius-md $radius-xl $radius-md $radius-xl;
+  padding: 2px $space-md;
   width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  @include respond-md {
-    max-width: 450px;
-    padding: 0 $space-md;
+  max-width: 450px;
+  margin: 10px auto 0;
+  position: relative;
+
+  @include respond-sm {
+    flex-direction: column;
+    align-items: stretch;
+    padding: $space-sm;
+    gap: $space-sm;
   }
 }
 
 .inputField {
   flex: 1;
-  height: 40px;
-  line-height: 40px;
+  height: 42px;
   border: none;
   outline: none;
-  font-size: $font-md;
   background-color: transparent;
   color: $text-color;
   direction: rtl;
-  padding: 0;
-  padding-left: $space-md;
-  padding-right: 30px;
+  font-size: $font-md;
+  padding: 0 $space-md 0 40px;
   transition: box-shadow 0.2s ease, border 0.2s ease;
-
-  @include respond-md {
-  padding-right: 20px;
-    font-size: 15px;
-  }
 
   &::placeholder {
     color: $muted-text-color;
     font-size: $font-md;
-
     @include respond-md {
-      font-size: 14px;
+    font-size: $font-sm;
     }
-    @include respond-sm {
-      font-size: 13px;
-    }
+  }
+
+  @include respond-sm {
+    height: 30px;
+    padding-left: 38px;
+    font-size: 15px;
   }
 }
 
@@ -57,14 +52,24 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0;
-  height: 30px;
+  position: absolute;
+  left: $space-md;
+  top: 50%;
+  transform: translateY(-50%);
   @include flex-center;
+
+  @include respond-sm {
+    left: 12px;
+  }
 }
 
 .searchIcon {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   color: $muted-text-color;
+
+  @include respond-sm {
+    font-size: 1rem;
+  }
 }
 
 .centerWrapper {

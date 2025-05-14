@@ -1,5 +1,7 @@
-export default function NewItems() {
-    return (
-        <h1>New Items</h1>
-    )
+'use client';
+import { ItemsPage } from '@/Components/Layout';
+import { newItems } from '@/mockData'; 
+
+export default function NewItemsPage() {
+    return <ItemsPage title="العناصر الجديدة" items={newItems} />;
 }

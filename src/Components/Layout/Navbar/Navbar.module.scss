@@ -130,8 +130,8 @@
 
   @include respond-md {
     width: 150px;
-    height: 2.5px;
-    transform: translateY(-10px);
+    height: 1.5px;
+    transform: translateY(-15px);
   }
 
   @include respond-sm {
@@ -145,4 +145,12 @@
 
 .sideLineRight {
   right: 0;
+}
+
+.logoButton {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
