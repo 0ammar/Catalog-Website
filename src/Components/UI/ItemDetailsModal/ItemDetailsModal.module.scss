@@ -1,14 +1,11 @@
-@use '@/styles/variables' as *;
-@use '@/styles/mixins' as *;
-
-@use '@/styles/variables' as *;
-@use '@/styles/mixins' as *;
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
 
 .overlay {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.6);
-  z-index: 999;
+  z-index: 99;
   animation: fadeIn 0.25s ease forwards;
 }
 
@@ -20,7 +17,7 @@
   background: $white;
   border-radius: 16px;
   padding: 20px;
-  z-index: 1000;
+  z-index: 100;
   max-width: 95vw;
   width: 480px;
   max-height: 90vh;
@@ -29,25 +26,54 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.menuBtn,
 .closeBtn {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  font-size: 26px;
-  background: none;
+  background: rgba(0, 0, 0, 0.06);
   border: none;
-  color: $text-color;
+  border-radius: 50%;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: transform 0.2s ease;
 
   &:hover {
-    transform: scale(1.2);
-    color: $primary-color;
+    background: rgba(0, 0, 0, 0.15);
+  }
+
+  svg {
+    color: $text-color;
   }
 }
 
+.statusMenu {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 110;
+  background: #fff;
+  border-radius: 30px;
+  padding: 6px 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 90vw;
+  overflow-x: auto; 
+}
+
+
 .carouselWrapper {
-  margin-bottom: $space-md;
+  margin: 30px 0 10px;
   display: flex;
   justify-content: center;
 }
@@ -68,12 +94,6 @@
     margin-bottom: 8px;
   }
 
-  .imageCount {
-    font-size: $font-sm;
-    color: $text-color;
-    margin-bottom: 8px;
-  }
-
   .description {
     font-size: $font-md;
     color: $text-color;
@@ -83,7 +103,6 @@
     &.collapsed {
       overflow: hidden;
       display: -webkit-box;
-      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
     }
 
@@ -126,8 +145,14 @@
 @media (max-width: 600px) {
   .modal {
     width: 92vw;
-    padding: 12px;
   }
+  .statusMenu {
+  top: 12px;
+  padding:  0;
+  max-width: 62vw;
+}
+
+
   .closeBtn {
     top: 8px;
     right: 10px;

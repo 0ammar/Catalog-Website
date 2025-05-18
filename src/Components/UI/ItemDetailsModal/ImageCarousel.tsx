@@ -2,7 +2,7 @@
 
 import styles from './ImageCarousel.module.scss';
 import Image, { StaticImageData } from 'next/image';
-import { useState, TouchEvent } from 'react';
+import { useState, useEffect, useRef, TouchEvent } from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 interface Props {
@@ -13,6 +13,8 @@ interface Props {
 export default function ImageCarousel({ images, onImageClick }: Props) {
   const [index, setIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const goNext = () => setIndex((prev) => (prev + 1) % images.length);
   const goPrev = () => setIndex((prev) => (prev - 1 + images.length) % images.length);
@@ -26,39 +28,56 @@ export default function ImageCarousel({ images, onImageClick }: Props) {
     const delta = e.changedTouches[0].clientX - touchStartX;
 
     if (delta > 50) goPrev();
-    if (delta < -50) goNext();
+    else if (delta < -50) goNext();
 
     setTouchStartX(null);
   };
 
-  return (
-    <div
-      className={styles.carousel}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
-      <button className={styles.navBtn} onClick={goPrev} title="السابق">
-        <IoIosArrowBack />
-      </button>
+  useEffect(() => {
+    if (wrapperRef.current) {
+      wrapperRef.current.scrollTo({
+        left: index * wrapperRef.current.clientWidth,
+        behavior: 'smooth',
+      });
+    }
+  }, [index]);
 
-      <div className={styles.imageWrapper}>
-        <Image
-          src={images[index]}
-          alt={`image-${index}`}
-          width={200}
-          height={200}
-          onClick={() => onImageClick(images[index] as string)}
-          className={styles.image}
-        />
+  return (
+    <div className={styles.carousel}>
+      {!isMobile && (
+        <button className={styles.navBtn} onClick={goPrev} title="السابق">
+          <IoIosArrowBack />
+        </button>
+      )}
+
+      <div
+        className={styles.imageWrapper}
+        ref={wrapperRef}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {images.map((img, i) => (
+          <Image
+            key={i}
+            src={img}
+            alt={`image-${i}`}
+            width={800}
+            height={500}
+            onClick={() => onImageClick(img as string)}
+            className={styles.image}
+          />
+        ))}
       </div>
 
-      <button className={styles.navBtn} onClick={goNext} title="التالي">
-        <IoIosArrowForward />
-      </button>
+      {!isMobile && (
+        <button className={styles.navBtn} onClick={goNext} title="التالي">
+          <IoIosArrowForward />
+        </button>
+      )}
 
       <div className={styles.dots}>
         {images.map((_, i) => (
-          <span
+          <div
             key={i}
             className={`${styles.dot} ${i === index ? styles.active : ''}`}
             onClick={() => setIndex(i)}

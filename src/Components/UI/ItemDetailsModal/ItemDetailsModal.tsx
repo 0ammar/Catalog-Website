@@ -3,9 +3,9 @@
 import styles from './ItemDetailsModal.module.scss';
 import ImageCarousel from './ImageCarousel';
 import ImageControls from './ImageControls';
-// import StatusButtons from './StatusButtons';
+import StatusButtons from './StatusButtons';
 import ImageViewerModal from './ImageViewerModal';
-
+import { Menu, X } from 'lucide-react';
 import { ItemDetailsType } from '@/types';
 import { useState } from 'react';
 
@@ -17,25 +17,35 @@ type Props = {
 export default function ItemDetailsModal({ item, onClose }: Props) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [showStatusMenu, setShowStatusMenu] = useState(false);
 
-  const toggleDescription = () => setIsDescriptionExpanded(prev => !prev);
+  const toggleDescriptionExpansion = () => setIsDescriptionExpanded(prev => !prev);
 
   return (
     <>
-      {/* Overlay */}
       <div className={styles.overlay} onClick={onClose} />
 
-      {/* Modal */}
       <div className={styles.modal}>
-        {/* Close Button */}
-        <button className={styles.closeBtn} onClick={onClose}>×</button>
+        <div className={styles.topBar}>
+          <button className={styles.menuBtn} onClick={() => setShowStatusMenu(prev => !prev)}>
+            <Menu size={22} />
+          </button>
 
-        {/* Carousel */}
+          <button className={styles.closeBtn} onClick={onClose}>
+            <X size={22} />
+          </button>
+        </div>
+
+        {showStatusMenu && (
+          <div className={styles.statusMenu}>
+            <StatusButtons itemId={item.id} status={item.status} />
+          </div>
+        )}
+
         <div className={styles.carouselWrapper}>
           <ImageCarousel images={item.images} onImageClick={setSelectedImage} />
         </div>
 
-        {/* Item Info */}
         <div className={styles.infoSection}>
           <h2 className={styles.title}>{item.name}</h2>
           <p className={styles.number}>{item.itemNumber}</p>
@@ -49,22 +59,19 @@ export default function ItemDetailsModal({ item, onClose }: Props) {
           </p>
 
           {item.description && item.description.length > 100 && (
-            <button className={styles.toggleBtn} onClick={toggleDescription}>
+            <button className={styles.toggleBtn} onClick={toggleDescriptionExpansion}>
               {isDescriptionExpanded ? 'عرض أقل' : 'عرض المزيد'}
             </button>
           )}
         </div>
 
-        {/* Admin Controls */}
         {item.isAdmin && (
           <div className={styles.adminSection}>
             <ImageControls itemId={item.id} images={item.images} />
-            {/* <StatusButtons itemId={item.id} status={item.status} /> */}
           </div>
         )}
       </div>
 
-      {/* Enlarged Image Viewer */}
       {selectedImage && (
         <ImageViewerModal imageUrl={selectedImage} onClose={() => setSelectedImage(null)} />
       )}

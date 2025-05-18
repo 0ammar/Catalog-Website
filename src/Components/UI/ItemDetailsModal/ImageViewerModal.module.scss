@@ -1,16 +1,12 @@
-@use '@/styles/variables' as *;
-@use '@/styles/mixins' as *;
-
-@use '@/styles/variables' as *;
-@use '@/styles/mixins' as *;
-
 .overlay {
   position: fixed;
   inset: 0;
+  width: 100vw;
+  height: 100vh;
   background: rgba(0, 0, 0, 0.6);
   z-index: 999;
-  opacity: 0;
   animation: fadeIn 0.25s ease forwards;
+  backdrop-filter: blur(2px);
 }
 
 .modal {
@@ -18,44 +14,65 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.95);
-  background: white;
-  padding: 10px;
-  border-radius: 16px;
   z-index: 1000;
-  max-width: 95vw;
-  max-height: 85vh;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
   animation: zoomIn 0.3s ease forwards;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 2rem;
+  background: transparent;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 90vw;
+  height: 75vh;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .image {
-  width: 100%;
-  height: auto;
-  max-width: 90vw;
-  max-height: 75vh;
   object-fit: contain;
-  border-radius: 12px;
 }
 
 .closeBtn {
   position: absolute;
   top: 12px;
-  right: 16px;
-  font-size: 28px;
-  background: none;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(0, 0, 0, 0.6);
   border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 26px;
+  font-weight: bold;
   cursor: pointer;
-  color: #555;
-  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10001;
 
   &:hover {
-    transform: scale(1.2);
-    color: $primary-color;
+    background-color: rgba(255, 255, 255, 0.85);
+    color: black;
+    transform: scale(1.1);
   }
 }
+
+@media (max-width: 768px) {
+  .closeBtn {
+    top: 10%;
+    right: 6%;
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+  }
+}
+
 
 @keyframes fadeIn {
   to {
@@ -70,12 +87,8 @@
 }
 
 @media (max-width: 768px) {
-  .modal {
-    padding: 6px;
-    border-radius: 10px;
+  .imageWrapper {
+    width: 90vw;
+    height: 60vh;
   }
-
-  .closeBtn {
-    font-size: 22px;
-  }
-} 
+}

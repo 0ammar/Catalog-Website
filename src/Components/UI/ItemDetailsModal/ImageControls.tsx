@@ -1,75 +1,129 @@
 'use client';
 
-import { StaticImageData } from 'next/image';
-import styles from './ImageControls.module.scss';
-import { BiTrash, BiUpload } from 'react-icons/bi';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react';
+import Image, { StaticImageData } from 'next/image';
+import styles from './ImageControls.module.scss';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
-/**
- * Props definition for ImageControls component
- */
-type Props = {
+interface Props {
   itemId: string;
   images: (string | StaticImageData)[];
   onUploadSuccess?: () => void;
   onDeleteSuccess?: () => void;
-};
+}
 
-/**
- * ImageControls Component
- */
 export default function ImageControls({ itemId, images, onUploadSuccess, onDeleteSuccess }: Props) {
   const [uploading, setUploading] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [showDeleteGrid, setShowDeleteGrid] = useState(false);
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
     setUploading(true);
-    const formData = new FormData();
-    Array.from(files).forEach(file => formData.append('images', file));
 
-    // simulate API call
-    setTimeout(() => {
-      console.log(`✅ Uploaded images to item ${itemId}`, files);
+    try {
+      const formData = new FormData();
+      Array.from(files).forEach((file) => {
+        formData.append('newImages', file);
+      });
+
+      await axios.post(`/api/admin/items/${itemId}/images`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
       toast.success('تم رفع الصور بنجاح!');
       onUploadSuccess?.();
+    } catch {
+      toast.error('فشل في رفع الصور!');
+    } finally {
       setUploading(false);
-    }, 1000);
+    }
   };
 
-  const handleDelete = async () => {
-    if (confirm('هل أنت متأكد أنك تريد حذف كل الصور؟')) {
-      setDeleting(true);
+  const confirmDelete = async () => {
+    if (selectedImages.length === 0) return;
 
-      // simulate API call
-      setTimeout(() => {
-        console.log(`🗑️ Deleted all images for item ${itemId}`);
-        toast.warn('تم حذف الصور!');
-        onDeleteSuccess?.();
-        setDeleting(false);
-      }, 1000);
+    setDeleting(true);
+
+    try {
+      await axios.delete(`/api/admin/items/${itemId}/images`, {
+        data: selectedImages,
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      toast.warn(`تم حذف ${selectedImages.length} صورة!`);
+      onDeleteSuccess?.();
+      setShowDeleteGrid(false);
+      setSelectedImages([]);
+    } catch {
+      toast.error('فشل في حذف الصور!');
+    } finally {
+      setDeleting(false);
     }
+  };
+
+  const handleImageToggle = (src: string) => {
+    setSelectedImages((prev) =>
+      prev.includes(src) ? prev.filter((i) => i !== src) : [...prev, src]
+    );
   };
 
   return (
     <div className={styles.controlsWrapper}>
-      <label className={`${styles.btn} ${styles.uploadBtn} ${uploading ? styles.loading : ''}`}>
-        <BiUpload className={styles.icon} /> {uploading ? 'جارٍ الرفع...' : 'رفع الصور'}
-        <input type="file" multiple hidden onChange={handleUpload} />
-      </label>
-
-      {images.length > 0 && (
+      {images.length > 0 && !showDeleteGrid && (
         <button
           className={`${styles.btn} ${styles.deleteBtn} ${deleting ? styles.loading : ''}`}
-          onClick={handleDelete}
+          onClick={() => setShowDeleteGrid(true)}
           disabled={deleting}
         >
-          <BiTrash className={styles.icon} /> {deleting ? 'جارٍ الحذف...' : 'حذف الصور'}
+          حذف الصور
         </button>
+      )}
+
+      <label className={`${styles.btn} ${styles.uploadBtn} ${uploading ? styles.loading : ''}`}>
+        {uploading ? 'جارٍ الرفع...' : 'رفع الصور'}
+        <input type="file" multiple hidden onChange={handleUpload} disabled={uploading} />
+      </label>
+
+      {showDeleteGrid && (
+        <div className={styles.deleteList}>
+          <p className={styles.warning}>اختر الصور التي ترغب بحذفها</p>
+          <div className={styles.imageGrid}>
+            {images.map((img, idx) => (
+              <Image
+  key={idx}
+  src={img as string}
+  alt={`delete-${idx}`}
+  width={90}
+  height={80}
+  onClick={() => handleImageToggle(img as string)}
+  className={`${styles.preview} ${selectedImages.includes(img as string) ? styles.selected : ''}`}
+/>
+
+            ))}
+          </div>
+
+          <div className={styles.confirmActions}>
+            <button
+              className={styles.uploadBtn}
+              onClick={() => setShowDeleteGrid(false)}
+              disabled={deleting}
+            >
+              تراجع
+            </button>
+            <button
+              className={styles.deleteBtn}
+              onClick={confirmDelete}
+              disabled={deleting || selectedImages.length === 0}
+            >
+              حذف {selectedImages.length} صور
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
