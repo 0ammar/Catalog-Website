@@ -18,7 +18,7 @@ export default function CategoryPage({ path }: Props) {
             : null;
 
   const [loading, setLoading] = useState(true);
-  const [isEmpty, setIsEmpty] = useState(true); // بدلها حسب داتا فعلية لاحقًا
+  const [isEmpty] = useState(true); // بدلها حسب داتا فعلية لاحقًا
 
   useEffect(() => {
     const timer = setTimeout(() => {

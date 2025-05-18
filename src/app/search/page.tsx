@@ -1,27 +1,10 @@
-'use client';
-
-import { useSearchParams } from 'next/navigation';
-import { useSearchList } from '@/Hooks';
-import { ItemsGrid, EmptyState } from '@/Components/UI';
-import Loading from '@/Components/UI/Loading/LoadingClient';
+import { Suspense } from 'react';
+import SearchClient from './SearchClient';
 
 export default function SearchPage() {
-  const searchParams = useSearchParams();
-  const query = searchParams.get('query') ?? '';
-  const { results, loading } = useSearchList(query);
-
   return (
-    <main>
-      {loading ? (
-        <Loading />
-      ) : results.length === 0 ? (
-        <EmptyState
-          title="لا توجد نتائج"
-          message="حاول استخدام كلمات بحث مختلفة أو تحقق من رقم الصنف."
-        />
-      ) : (
-        <ItemsGrid items={results} />
-      )}
-    </main>
+    <Suspense fallback={<div>جاري تحميل نتائج البحث...</div>}>
+      <SearchClient />
+    </Suspense>
   );
 }

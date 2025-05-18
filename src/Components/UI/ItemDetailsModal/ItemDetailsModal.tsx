@@ -3,7 +3,7 @@
 import styles from './ItemDetailsModal.module.scss';
 import ImageCarousel from './ImageCarousel';
 import ImageControls from './ImageControls';
-import StatusButtons from './StatusButtons';
+// import StatusButtons from './StatusButtons';
 import ImageViewerModal from './ImageViewerModal';
 
 import { ItemDetailsType } from '@/types';
