@@ -15,3 +15,13 @@ export type ItemsPageProps = {
   title?: string;
   items: ItemCardProps[];
 };
+
+export type ItemDetailsType = {
+  id: string;
+  name: string;
+  itemNumber: string;
+  description?: string;
+  status: 'New' | 'Focused' | 'Active' | 'InActive';
+  images: (string | StaticImageData)[];
+  isAdmin?: boolean;
+};

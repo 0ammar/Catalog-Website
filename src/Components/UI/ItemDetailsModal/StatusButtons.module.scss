@@ -1,0 +1,39 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.statusButtons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.iconBtn {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  background-color: #fff;
+  color: #888;
+  font-size: 20px;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+
+  &:hover {
+    transform: scale(1.08);
+    background-color: #f9f9f9;
+  }
+}
+
+.active {
+  border-color: #A01515;
+  color: #A01515;
+  background-color: #fff0f0;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(160, 21, 21, 0.2);
+}

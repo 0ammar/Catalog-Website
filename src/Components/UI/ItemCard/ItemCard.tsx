@@ -4,28 +4,43 @@ import styles from './ItemCard.module.scss';
 import { ItemCardProps } from '@/types';
 import Image from 'next/image';
 import { FiCheckCircle } from 'react-icons/fi';
+import { useState } from 'react';
+import ItemDetailsModal from '../ItemDetailsModal/ItemDetailsModal';
+import { img1, img2, img3, img4 } from '@/assets/images'
 
 export default function ItemCard({ imageUrl, name, itemNumber, status = 'Active' }: ItemCardProps) {
+  const [showDetails, setShowDetails] = useState(false);
+
+  const itemDetails = {
+    id: itemNumber,
+    name,
+    itemNumber,
+    description: 'لا يوجد وصف حالياً',
+    images: [ img1, img2, img3, img4],
+    status,
+    isAdmin: true,
+  };
+
   return (
-    <div className={styles.itemCard}>
-      <div className={styles.imageWrapper}>
-        <Image
-          src={imageUrl}
-          alt={name}
-          width={150}
-          height={150}
-          className={styles.image}
-        />
-      </div>
-      <div className={styles.info}>
-        <h3 className={styles.name}>{name}</h3>
-        <p className={styles.itemNumber}>{itemNumber}</p>
-      </div>
-      {status !== 'Active' && (
-        <div className={styles.statusIcon} title={status}>
-          <FiCheckCircle />
+    <>
+      <div className={styles.itemCard} onClick={() => setShowDetails(true)}>
+        <div className={styles.imageWrapper}>
+          <Image src={imageUrl} alt={name} width={150} height={150} className={styles.image} />
         </div>
+        <div className={styles.info}>
+          <h3 className={styles.name}>{name}</h3>
+          <p className={styles.itemNumber}>{itemNumber}</p>
+        </div>
+        {status !== 'Active' && (
+          <div className={styles.statusIcon} title={status}>
+            <FiCheckCircle />
+          </div>
+        )}
+      </div>
+
+      {showDetails && (
+        <ItemDetailsModal item={itemDetails} onClose={() => setShowDetails(false)} />
       )}
-    </div>
+    </>
   );
 }

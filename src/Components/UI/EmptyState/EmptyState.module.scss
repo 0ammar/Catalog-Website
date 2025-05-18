@@ -1,0 +1,40 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.emptyState {
+  @include flex-center;
+  flex-direction: column;
+  text-align: center;
+  padding: $space-xl;
+  min-height: 60vh;
+
+  @include respond-sm {
+    padding: $space-lg;
+  }
+}
+
+.image {
+  max-width: 220px;
+  height: auto;
+  margin-bottom: $space-md;
+}
+
+.title {
+  color: $primary-color;
+  font-size: $font-lg;
+  font-weight: $weight-bold;
+  margin-bottom: $space-sm;
+
+  @include respond-sm {
+    font-size: $font-md;
+  }
+}
+
+.message {
+  color: $muted-text-color;
+  font-size: $font-md;
+
+  @include respond-sm {
+    font-size: $font-sm;
+  }
+}

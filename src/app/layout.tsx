@@ -1,6 +1,8 @@
 import { Navbar, Searchbar, Footer, Container } from "@/Components/Layout";
 import "./layout.scss";
 import type { Metadata } from "next";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const metadata: Metadata = {
   title: "Almutasaweq Catalog",
@@ -10,10 +12,9 @@ export const metadata: Metadata = {
     type: "website",
   },
   icons: {
-    icon: "/app-icon.png", 
+    icon: "/app-icon.png",
   },
 };
-
 
 export default function RootLayout({
   children,
@@ -29,7 +30,8 @@ export default function RootLayout({
           {children}
           <Footer />
         </Container>
+        <ToastContainer position="bottom-center" rtl />
       </body>
-    </html >
+    </html>
   );
 }

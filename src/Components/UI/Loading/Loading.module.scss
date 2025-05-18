@@ -1,0 +1,17 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.loadingWrapper {
+  @include flex-center;
+  min-height: 60vh;
+}
+
+.loader {
+  width: 200px;
+  height: 200px;
+
+  @include respond-sm {
+    width: 140px;
+    height: 140px;
+  }
+}
