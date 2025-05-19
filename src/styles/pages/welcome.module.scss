@@ -1,0 +1,166 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.wrapper {
+  @include flex-vertical;
+  min-height: 100vh;
+  padding: $space-xl $space-md;
+  background-color: $background-color;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+
+  @include respond-md {
+    padding: $space-lg $space-sm;
+  }
+}
+
+.logo {
+  width: 50%;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: $space-xl;
+  transition: transform 0.3s ease;
+
+  @include respond-md {
+    margin-bottom: $space-lg;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.title {
+  font-size: $font-xxl;
+  font-weight: $weight-bold;
+  color: $primary-color;
+  margin-bottom: $space-md;
+  transition: color 0.2s ease;
+
+  @include respond-md {
+    font-size: $font-xl;
+  }
+
+  @include respond-sm {
+    font-size: $font-md;
+    margin-bottom: $space-sm;
+  }
+}
+
+.underline {
+  width: 500px;
+  height: 2px;
+  background-color: $primary-color;
+  border-radius: $radius-md;
+  margin: 0 auto $space-md auto;
+  transition: width 0.3s ease;
+
+  @include respond-md {
+    margin: 0 auto $space-sm auto;
+    width: 250px;
+  }
+}
+
+.actions {
+  @include flex-vertical;
+  max-width: 320px;
+  width: 100%;
+  margin-top: $space-md;
+  gap: $space-sm;
+  transition: all 0.3s ease;
+}
+
+.primaryBtn,
+.secondaryBtn {
+  padding: 15px 30px;
+  border-radius: $radius-xl;
+  font-size: 24px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+
+  @include respond-md {
+    font-size: $font-md;
+    padding: 10px 25px;
+  }
+
+  @include respond-sm {
+    font-size: $font-sm;
+  }
+}
+
+.primaryBtn {
+  background-color: $primary-color;
+  color: $white;
+  border: none;
+
+  &:hover {
+    background-color: darken($primary-color, 8%);
+    transform: translateY(-1px);
+  }
+}
+
+.secondaryBtn {
+  background-color: transparent;
+  color: $primary-color;
+  border: none;
+
+  &:hover {
+    text-decoration: underline;
+    transform: translateY(-1px);
+  }
+}
+
+.form {
+  @include flex-vertical;
+  gap: $space-sm;
+  max-width: 320px;
+  width: 100%;
+  margin-top: $space-md;
+  animation: fadeIn 0.3s ease;
+
+  @include respond-sm {
+    gap: $space-sm;
+    margin-top: $space-sm;
+  }
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  border: 1px solid $border-color;
+  border-radius: $radius-md;
+  background-color: $white;
+  padding: $space-sm $space-md;
+
+  input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: $font-md;
+    color: $text-color;
+    direction: rtl;
+
+    @include respond-sm {
+      font-size: $font-sm;
+    }
+  }
+
+  svg {
+    color: $muted-text-color;
+    font-size: 1.1rem;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

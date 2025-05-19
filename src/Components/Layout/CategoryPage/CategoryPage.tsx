@@ -2,22 +2,16 @@
 
 import styles from './CategoryPage.module.scss';
 import { CategoryGrid, EmptyState } from '@/Components/UI';
+import { useCategoryNavigator } from '@/Hooks/useCategoryNavigator';
 
 type Props = {
   path: string[];
 };
 
 const CategoryPage = ({ path }: Props) => {
-  const currentLevel =
-    path.length === 1 ? 'المجموعة 1'
-      : path.length === 2 ? 'المجموعة 2'
-        : path.length === 3 ? 'المجموعة 3'
-          : path.length === 4 ? 'المجموعة 4'
-            : null;
+  const { currentLevelName, currentData, loading } = useCategoryNavigator(path);
 
-  const items = Array.from({ length: 10 }, (_, i) => i); 
-
-  if (!currentLevel) {
+  if (!currentLevelName) {
     return (
       <EmptyState
         title="مسار غير صحيح"
@@ -29,16 +23,18 @@ const CategoryPage = ({ path }: Props) => {
   return (
     <main className={styles.categoryPage}>
       <h1 className={styles.pageTitle}>
-        {currentLevel} ({items.length})
+        {currentLevelName} ({currentData.length})
       </h1>
 
-      {items.length === 0 ? (
+      {loading ? (
+        <p>جاري التحميل...</p>
+      ) : currentData.length === 0 ? (
         <EmptyState
           title="لا توجد أصناف"
           message="يبدو أن هذه المجموعة فارغة."
         />
       ) : (
-        <CategoryGrid />
+        <CategoryGrid data={currentData} />
       )}
     </main>
   );

@@ -2,16 +2,20 @@
 
 import styles from './CategoryGrid.module.scss';
 import { CategoryCard } from '@/Components/UI';
+import { Group } from '@/types/apiTypes';
 
-const CategoryGrid = () => {
-    const dummyData = Array.from({ length: 20 }, (_, i) => i);
+type Props = {
+  data: Group[]; 
+};
 
-    return (
-        <div className={styles.categoryGrid}>
-            {dummyData.map((_, index) => (
-                <CategoryCard key={index} />
-            ))}
-        </div>
-    );
-}
-export default CategoryGrid
+const CategoryGrid = ({ data }: Props) => {
+  return (
+    <div className={styles.categoryGrid}>
+      {data.map((group, index) => (
+        <CategoryCard key={group.id || index} group={group} />
+      ))}
+    </div>
+  );
+};
+
+export default CategoryGrid;

@@ -1,18 +1,26 @@
 'use client';
 
-import styles from "./CategoryCard.module.scss";
-import Image from "next/image";
+import styles from './CategoryCard.module.scss';
+import Image from 'next/image';
+import { FiUploadCloud, FiRefreshCw } from 'react-icons/fi';
+import { Group } from '@/types/apiTypes';
 
-import { Logo } from "@/assets/images"; 
-import { FiUploadCloud, FiRefreshCw } from "react-icons/fi";
+type Props = {
+  group: Group;
+};
 
-const CategoryCard = () => {
-
+const CategoryCard = ({ group }: Props) => {
   return (
     <section className={styles.categoryCard}>
       <div className={styles.imgTitle}>
-        <Image className={styles.categImg} src={Logo} alt="Category" width={100} height={100} />
-        <h2 className={styles.categTitle}>Category Title</h2>
+        <Image
+          className={styles.categImg}
+          src={group.imageUrl}
+          alt={group.name}
+          width={100}
+          height={100}
+        />
+        <h2 className={styles.categTitle}>{group.name}</h2>
       </div>
       <div className={styles.buttonsWrapper}>
         <FiRefreshCw className={styles.icon} title="Reset" />
@@ -20,5 +28,6 @@ const CategoryCard = () => {
       </div>
     </section>
   );
-}
-export default CategoryCard
+};
+
+export default CategoryCard;

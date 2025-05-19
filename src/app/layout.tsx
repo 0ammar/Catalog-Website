@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Navbar, Searchbar, Footer, Container } from '@/Components/Layout';
+import { Container } from '@/Components/Layout';
 import RouteLoading from '@/Components/UI/Loading/RouteLoading';
 
 export const metadata: Metadata = {
@@ -23,14 +23,11 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     <html lang="ar">
       <body>
         <Container>
-          <Navbar />
-          <Searchbar />
 
           <RouteLoading>
             {children}
           </RouteLoading>
 
-          <Footer />
         </Container>
         <ToastContainer position="bottom-center" rtl />
       </body>

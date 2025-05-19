@@ -1,4 +1,4 @@
-import Logo from './header.png'
+import Logo from './upscalemedia-transformed.png'
 import StarImg from './focused.png'
 import NewImg from './new.png'
 import AppIcon from './app-icon.png'
