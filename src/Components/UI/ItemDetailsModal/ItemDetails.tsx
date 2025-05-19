@@ -3,7 +3,7 @@
 import styles from './ItemDetails.module.scss';
 import { ImageCarousel, ImageControls, ImageViewer, StatusButtons  } from './index'
 import { Menu, X } from 'lucide-react';
-import { ItemDetailsType } from '../../../../types/itemComponent';
+import { ItemDetailsType } from '../../../types/itemComponent';
 import { useState } from 'react';
 
 type Props = {

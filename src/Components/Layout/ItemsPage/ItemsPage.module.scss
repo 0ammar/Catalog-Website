@@ -2,9 +2,18 @@
 @use "@/styles/mixins" as *;
 
 .itemsPage {
-  padding: $space-md 5px 0;
+  padding: $space-lg $space-sm;
+
+  @include respond-sm {
+    padding: $space-md $space-sm;
+  }
 }
 
 .pageTitle {
   @include section-title;
+  margin-bottom: $space-md;
+
+  @include respond-sm {
+    font-size: $font-md;
+  }
 }

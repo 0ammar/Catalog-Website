@@ -7,6 +7,12 @@
   align-items: center;
 }
 
+@mixin flex-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 @mixin absolute-center {
   position: absolute;
   top: 50%;
@@ -73,4 +79,17 @@ $break-xl: 1200px;
   }
 }
 
-.center-if-few { min-height: 60vh; @include flex-center; }
+.center-if-few {
+  min-height: 60vh;
+  @include flex-center;
+}
+
+@mixin card-hover-3d {
+  perspective: 1000px;
+  cursor: pointer;
+  &:hover {
+    transform: rotateX(3deg) rotateY(-3deg) scale(1.01);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.15);
+  }
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}

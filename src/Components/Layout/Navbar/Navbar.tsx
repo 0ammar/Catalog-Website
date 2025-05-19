@@ -7,13 +7,12 @@ import { Logo, StarImg, NewImg } from '@/assets/images'
 import { HiOutlineUser, HiOutlineLogout } from 'react-icons/hi'
 
 const Navbar = () => {
-  const router = useRouter()
 
+  const router = useRouter()
   const leftIcons = [
     { title: 'Logout', icon: <HiOutlineLogout className={styles.icon} />, onClick: () => console.log("Logout!") },
     { title: 'Profile', icon: <HiOutlineUser className={styles.icon} />, onClick: () => console.log("Profile!") }
   ]
-
   const rightIcons = [
     { title: 'Focused Items', src: StarImg, alt: 'Focused Items', href: '/focused-items', className: styles.StarImg },
     { title: 'New Items', src: NewImg, alt: 'New Items', href: '/new-items', className: styles.newImg }

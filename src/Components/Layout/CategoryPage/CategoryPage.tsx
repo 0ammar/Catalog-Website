@@ -2,8 +2,6 @@
 
 import styles from './CategoryPage.module.scss';
 import { CategoryGrid, EmptyState } from '@/Components/UI';
-import Loading from '@/Components/UI/Loading/LoadingClient';
-import { useEffect, useState } from 'react';
 
 type Props = {
   path: string[];
@@ -17,32 +15,33 @@ const CategoryPage = ({ path }: Props) => {
           : path.length === 4 ? 'المجموعة 4'
             : null;
 
-  const [loading, setLoading] = useState(true);
-  const [isEmpty] = useState(true); // بدلها حسب داتا فعلية لاحقًا
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 600); // simulate API loading
-
-    return () => clearTimeout(timer);
-  }, []);
+  const items = Array.from({ length: 10 }, (_, i) => i); 
 
   if (!currentLevel) {
-    return <EmptyState title="مسار غير صحيح" message="لم يتم العثور على مجموعة مطابقة" />;
+    return (
+      <EmptyState
+        title="مسار غير صحيح"
+        message="لم يتم العثور على مجموعة مطابقة"
+      />
+    );
   }
 
   return (
     <main className={styles.categoryPage}>
-      <h1 className={styles.pageTitle}>{currentLevel}</h1>
-      {loading ? (
-        <Loading />
-      ) : isEmpty ? (
-        <EmptyState title="لا توجد أصناف" message="يبدو أن هذه المجموعة فارغة." />
+      <h1 className={styles.pageTitle}>
+        {currentLevel} ({items.length})
+      </h1>
+
+      {items.length === 0 ? (
+        <EmptyState
+          title="لا توجد أصناف"
+          message="يبدو أن هذه المجموعة فارغة."
+        />
       ) : (
         <CategoryGrid />
       )}
     </main>
   );
-}
-export default CategoryPage
+};
+
+export default CategoryPage;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ItemCardProps } from '../../types/itemComponent'; 
+import { ItemCardProps } from '../types/itemComponent'; 
 import { newItems, focusedItems } from '@/mockData';
 
 const allItems: ItemCardProps[] = [...newItems, ...focusedItems];

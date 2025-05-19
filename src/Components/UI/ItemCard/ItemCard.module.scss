@@ -3,66 +3,79 @@
 @use "@/styles/mixins" as *;
 
 .itemCard {
-  background-color: $white;
-  border-radius: 20px;
-  padding: $space-sm;
-  @include card-shadow;
   position: relative;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: $space-lg;
-  cursor: "pointer";
+  background-color: $white;
+  border-radius: $radius-lg;
+  padding: $space-md $space-md 0;
+  gap: 10px;
+  @include respond-md {
+    gap: 5px;
+  }
+
+  @include card-shadow;
+  @include card-hover-3d;
+  @include flex-vertical;
 }
 
 .imageWrapper {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
+  border-radius: $radius-md;
 }
 
 .image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+
+  .itemCard:hover & {
+    transform: scale(1.04) rotateZ(0.6deg);
+  }
 }
 
 .info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @include flex-vertical;
 }
 
 .name {
   font-size: $font-lg;
-  font-weight: $weight-medium;
+  font-weight: $weight-bold;
+  line-height: 1.3;
   color: $text-color;
-  max-width: 150px;
+  max-width: 160px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
+
   @include respond-md {
     font-size: $font-md;
   }
 }
 
 .itemNumber {
-  font-size: math.div($font-sm, 1.1);
+  font-size: $font-sm;
   color: $primary-color;
+  margin-top: 4px;
+
   @include respond-md {
-    font-size: calc($font-sm / 1.1);
+    font-size: 10px;
+    margin-top: 0;
   }
 }
 
 .statusIcon {
   position: absolute;
-  bottom: $space-sm;
-  left: $space-md;
+  bottom: 5px;
+  left: 20px;
   color: $primary-color;
   font-size: 1.1rem;
+
   @include respond-md {
-    bottom: 0.4px;
-    left: 9px;
+    bottom: 0px;
+    left: 15px;
+    font-size: 0.9rem;
   }
 }

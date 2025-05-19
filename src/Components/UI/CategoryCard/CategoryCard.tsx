@@ -2,10 +2,12 @@
 
 import styles from "./CategoryCard.module.scss";
 import Image from "next/image";
-import { FiUploadCloud, FiRefreshCw } from "react-icons/fi";
+
 import { Logo } from "@/assets/images"; 
+import { FiUploadCloud, FiRefreshCw } from "react-icons/fi";
 
 const CategoryCard = () => {
+
   return (
     <section className={styles.categoryCard}>
       <div className={styles.imgTitle}>
@@ -19,5 +21,4 @@ const CategoryCard = () => {
     </section>
   );
 }
-
 export default CategoryCard

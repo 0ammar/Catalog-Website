@@ -3,18 +3,16 @@
 import { useSearchParams } from 'next/navigation';
 import { useSearchList } from '@/Hooks';
 import { ItemsGrid, EmptyState } from '@/Components/UI';
-import Loading from '@/Components/UI/Loading/LoadingClient';
 
 const SearchClient = () => {
+
   const searchParams = useSearchParams();
   const query = searchParams.get('query') ?? '';
-  const { results, loading } = useSearchList(query);
+  const { results } = useSearchList(query);
 
   return (
     <main>
-      {loading ? (
-        <Loading />
-      ) : results.length === 0 ? (
+      {results.length === 0 ? (
         <EmptyState
           title="لا توجد نتائج"
           message="حاول استخدام كلمات بحث مختلفة أو تحقق من رقم الصنف."
@@ -24,6 +22,6 @@ const SearchClient = () => {
       )}
     </main>
   );
-}
+};
 
-export default  SearchClient
+export default SearchClient;

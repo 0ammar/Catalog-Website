@@ -1,4 +1,4 @@
-import { ItemCardProps } from '../types/itemComponent';
+import { ItemCardProps } from './types/itemComponent';
 import { Logo } from './assets/images/';
 
 export const newItems: ItemCardProps[] = Array.from({ length: 20 }, (_, i) => ({
