@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import { ItemsPage } from '@/Components/Layout';
 import { newItems } from '@/mockData';
 import Loading from '@/Components/UI/Loading/LoadingClient';;
-import { ItemCardProps } from '@/types';
+import { ItemCardProps } from '../../../types/itemComponent';
 
-export default function NewItemsPage() {
+const NewItemsPage =() => {
   const [items, setItems] = useState<ItemCardProps[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,3 +25,5 @@ export default function NewItemsPage() {
     <ItemsPage title="العناصر الجديدة" items={items} />
   );
 }
+
+export default NewItemsPage

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { FiUploadCloud, FiRefreshCw } from "react-icons/fi";
 import { Logo } from "@/assets/images"; 
 
-export default function CategoryCard() {
+const CategoryCard = () => {
   return (
     <section className={styles.categoryCard}>
       <div className={styles.imgTitle}>
@@ -19,3 +19,5 @@ export default function CategoryCard() {
     </section>
   );
 }
+
+export default CategoryCard

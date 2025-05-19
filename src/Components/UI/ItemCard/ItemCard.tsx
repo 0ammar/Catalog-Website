@@ -1,14 +1,14 @@
 'use client';
 
 import styles from './ItemCard.module.scss';
-import { ItemCardProps } from '@/types';
+import { ItemCardProps } from '../../../../types/itemComponent';
 import Image from 'next/image';
 import { FiCheckCircle } from 'react-icons/fi';
 import { useState } from 'react';
-import ItemDetailsModal from '../ItemDetailsModal/ItemDetailsModal';
+import ItemDetailsModal from '../ItemDetailsModal/ItemDetails';
 import { img1, img2, img3, img4 } from '@/assets/images'
 
-export default function ItemCard({ imageUrl, name, itemNumber, status = 'Active' }: ItemCardProps) {
+const ItemCard = ({ imageUrl, name, itemNumber, status = 'Active' }: ItemCardProps) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const itemDetails = {
@@ -44,3 +44,5 @@ export default function ItemCard({ imageUrl, name, itemNumber, status = 'Active'
     </>
   );
 }
+
+export default ItemCard

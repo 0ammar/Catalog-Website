@@ -3,7 +3,7 @@
 import styles from './CategoryGrid.module.scss';
 import { CategoryCard } from '@/Components/UI';
 
-export default function CategoryGrid() {
+const CategoryGrid = () => {
     const dummyData = Array.from({ length: 20 }, (_, i) => i);
 
     return (
@@ -14,3 +14,4 @@ export default function CategoryGrid() {
         </div>
     );
 }
+export default CategoryGrid

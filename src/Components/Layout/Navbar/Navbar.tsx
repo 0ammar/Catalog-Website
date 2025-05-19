@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Logo, StarImg, NewImg } from '@/assets/images'
 import { HiOutlineUser, HiOutlineLogout } from 'react-icons/hi'
 
-export default function Navbar() {
+const Navbar = () => {
   const router = useRouter()
 
   const leftIcons = [
@@ -49,3 +49,4 @@ export default function Navbar() {
     </header>
   )
 }
+export default Navbar

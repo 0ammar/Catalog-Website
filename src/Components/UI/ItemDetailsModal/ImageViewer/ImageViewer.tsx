@@ -1,6 +1,6 @@
 'use client';
 
-import styles from './ImageViewerModal.module.scss';
+import styles from './ImageViewer.module.scss';
 import Image from 'next/image';
 import { useEffect } from 'react';
 
@@ -9,7 +9,7 @@ type Props = {
   onClose: () => void;
 };
 
-export default function ImageViewerModal({ imageUrl, onClose }: Props) {
+const ImageViewer = ({ imageUrl, onClose }: Props) => {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -35,3 +35,5 @@ export default function ImageViewerModal({ imageUrl, onClose }: Props) {
     </>
   );
 }
+
+export default ImageViewer

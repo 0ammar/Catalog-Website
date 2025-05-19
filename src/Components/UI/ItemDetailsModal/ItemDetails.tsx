@@ -1,12 +1,9 @@
 'use client';
 
-import styles from './ItemDetailsModal.module.scss';
-import ImageCarousel from './ImageCarousel';
-import ImageControls from './ImageControls';
-import StatusButtons from './StatusButtons';
-import ImageViewerModal from './ImageViewerModal';
+import styles from './ItemDetails.module.scss';
+import { ImageCarousel, ImageControls, ImageViewer, StatusButtons  } from './index'
 import { Menu, X } from 'lucide-react';
-import { ItemDetailsType } from '@/types';
+import { ItemDetailsType } from '../../../../types/itemComponent';
 import { useState } from 'react';
 
 type Props = {
@@ -14,7 +11,7 @@ type Props = {
   onClose: () => void;
 };
 
-export default function ItemDetailsModal({ item, onClose }: Props) {
+const ItemDetails = ({ item, onClose }: Props) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [showStatusMenu, setShowStatusMenu] = useState(false);
@@ -73,8 +70,10 @@ export default function ItemDetailsModal({ item, onClose }: Props) {
       </div>
 
       {selectedImage && (
-        <ImageViewerModal imageUrl={selectedImage} onClose={() => setSelectedImage(null)} />
+        <ImageViewer imageUrl={selectedImage} onClose={() => setSelectedImage(null)} />
       )}
     </>
   );
 }
+
+export default ItemDetails

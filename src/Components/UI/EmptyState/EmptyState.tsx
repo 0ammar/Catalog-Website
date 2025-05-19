@@ -8,10 +8,10 @@ type Props = {
   message?: string;
 };
 
-export default function EmptyState({
+const EmptyState = ({
   title = 'لا توجد أصناف مطابقة',
   message = 'حاول البحث باسم أو رقم صنف مختلف.',
-}: Props) {
+}: Props) => {
   return (
     <section className={styles.emptyState}>
       <Image
@@ -26,3 +26,5 @@ export default function EmptyState({
     </section>
   );
 }
+
+export default EmptyState

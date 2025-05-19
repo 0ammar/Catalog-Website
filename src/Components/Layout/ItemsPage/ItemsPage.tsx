@@ -1,10 +1,10 @@
 'use client';
 
 import styles from './ItemsPage.module.scss';
-import { ItemsPageProps } from '@/types';
+import { ItemsPageProps } from '../../../../types/itemComponent';
 import { ItemsGrid, EmptyState } from '@/Components/UI';
 
-export default function ItemsPage({ title, items }: ItemsPageProps) {
+const ItemsPage = ({ title, items }: ItemsPageProps) => {
   return (
     <main className={styles.itemsPage}>
       {title && <h1 className={styles.pageTitle}>{title}</h1>}
@@ -17,3 +17,4 @@ export default function ItemsPage({ title, items }: ItemsPageProps) {
     </main>
   );
 }
+export default ItemsPage 

@@ -18,7 +18,7 @@ const statusOptions: { key: StatusType; icon: React.ReactNode; title: string }[]
   { key: 'Focused', icon: <HiOutlineHeart />, title: 'Focused' },
 ];
 
-export default function StatusButtons({ itemId, status, onStatusChange }: Props) {
+const StatusButtons = ({ itemId, status, onStatusChange }: Props) => {
   const handleClick = (newStatus: StatusType) => {
     console.log(`Item ${itemId} changed to ${newStatus}`);
     onStatusChange?.(newStatus);
@@ -39,3 +39,4 @@ export default function StatusButtons({ itemId, status, onStatusChange }: Props)
     </div>
   );
 }
+export default StatusButtons

@@ -1,32 +1,30 @@
-@use "@/styles/variables" as *;
-@use "@/styles/mixins" as *;
+@use '@/styles/mixins' as *;
 
 .controlsWrapper {
   display: flex;
-  justify-content: center;
+  flex-direction: center;
   align-items: center;
-  gap: 80px;
+  gap: 24px;
   margin-top: 24px;
-
 }
 
 .btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 12px;
+  padding: 10px 22px;
   font-size: 14px;
-  font-weight: 500;
+  border: none;
+  border-radius: 24px;
   cursor: pointer;
+  font-weight: 500;
   transition: all 0.25s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .uploadBtn {
-  background-color: #f0f4ff;
-  color: #a01515;
+  background-color: #1a1a1a;
+  color: #fff;
 
   &:hover {
-    background-color: #e6ecff;
+    background-color: #000;
   }
 }
 
@@ -37,11 +35,6 @@
   &:hover {
     background-color: #ffe3e3;
   }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
 }
 
 .loading {
@@ -51,12 +44,11 @@
 
 .deleteList {
   width: 100%;
-  max-width: 420px;
+  max-width: 460px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  margin-top: 20px;
+  gap: 16px;
 }
 
 .warning {
@@ -73,39 +65,44 @@
   width: 100%;
 }
 
-.preview {
-  width: 100%;
-  height: 80px;
-  object-fit: cover;
-  border: 2px solid transparent;
-  border-radius: 12px;
-  cursor: pointer;
+.previewWrapper {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
   transition: 0.2s ease;
-
-  &:hover {
-    opacity: 0.9;
-  }
+  cursor: pointer;
 }
 
-.selected {
-  border-color: #a01515;
-  box-shadow: 0 0 4px rgba(160, 21, 21, 0.5);
+.preview {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+  transition: opacity 0.2s;
+}
+
+.selectedWrapper {
+  opacity: 0.3;
+  outline: 2px dashed #a01515;
+}
+
+.overlayIcon {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #fff;
+  border-radius: 50%;
+  padding: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 .confirmActions {
   display: flex;
-  gap: 32px;
+  gap: 20px;
   justify-content: center;
-  margin-top: 12px;
+  margin-top: 10px;
 
   button {
     min-width: 100px;
-  }
-
-  @media (max-width: 600px) {
-
-    button {
-      width: 100%;
-    }
   }
 }

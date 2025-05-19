@@ -1,22 +1,26 @@
-'use client';
-import { useEffect, useState } from 'react';
-import Loading from '@/Components/UI/Loading/LoadingClient';
+'use client'
 
-export default function Welcome() {
+import { useEffect, useState } from "react"
+import Loading from '@/Components/UI/Loading/LoadingClient'
+import styles from './welcome.module.scss'
+
+const Welcome = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer = setTimeout ( () => {
       setLoading(false);
     }, 600);
     return () => clearTimeout(timer);
   }, []);
 
-  return loading ? (
-    <Loading />
-  ) : (
-    <div style={{ padding: 300, margin: 'auto', textAlign: 'center', fontSize: 40 }}>
-      Welcome
+  if (loading) return <Loading/>
+
+  return (
+    <div className={styles.container}>
+      اهلا بك في كتالوج المتسوق
     </div>
-  );
+  )
 }
+
+export default Welcome

@@ -9,7 +9,7 @@ type Props = {
   path: string[];
 };
 
-export default function CategoryPage({ path }: Props) {
+const CategoryPage = ({ path }: Props) => {
   const currentLevel =
     path.length === 1 ? 'المجموعة 1'
       : path.length === 2 ? 'المجموعة 2'
@@ -45,3 +45,4 @@ export default function CategoryPage({ path }: Props) {
     </main>
   );
 }
+export default CategoryPage

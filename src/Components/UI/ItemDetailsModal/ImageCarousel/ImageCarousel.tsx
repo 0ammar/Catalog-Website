@@ -10,7 +10,7 @@ interface Props {
   onImageClick: (url: string) => void;
 }
 
-export default function ImageCarousel({ images, onImageClick }: Props) {
+const ImageCarousel = ({ images, onImageClick }: Props) => {
   const [index, setIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
@@ -87,3 +87,5 @@ export default function ImageCarousel({ images, onImageClick }: Props) {
     </div>
   );
 }
+
+export default ImageCarousel

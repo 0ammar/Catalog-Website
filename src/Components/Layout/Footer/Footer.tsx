@@ -3,7 +3,7 @@
 import styles from './Footer.module.scss'
 import Image from 'next/image'
 import { AppIcon } from '@/assets/images'
-export default function Footer() {
+const Footer = () => {
     return (
         <footer className={styles.footer}>
             <div className={styles.left}>
@@ -16,3 +16,4 @@ export default function Footer() {
         </footer>
     )
 }
+export default Footer

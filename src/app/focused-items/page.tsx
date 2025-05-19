@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import { ItemsPage } from '@/Components/Layout';
 import { focusedItems } from '@/mockData';
 import Loading from '@/Components/UI/Loading/LoadingClient';
-import { ItemCardProps } from '@/types';
+import { ItemCardProps } from '../../../types/itemComponent';
 
-export default function FocusedItems() {
+const FocusedItems = () => {
   const [items, setItems] = useState<ItemCardProps[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,3 +25,5 @@ export default function FocusedItems() {
     <ItemsPage title="العناصر المميزة" items={items} />
   );
 }
+
+export default FocusedItems

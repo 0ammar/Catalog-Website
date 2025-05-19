@@ -5,7 +5,7 @@ import { IoSearch } from 'react-icons/io5';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function Searchbar() {
+const Searchbar = () => {
   const [query, setQuery] = useState('');
   const router = useRouter();
 
@@ -31,3 +31,4 @@ export default function Searchbar() {
     </form>
   );
 }
+export default Searchbar

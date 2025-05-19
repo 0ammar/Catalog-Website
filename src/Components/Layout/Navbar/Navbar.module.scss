@@ -15,8 +15,8 @@
 }
 
 .logoContainer {
-  @include flex-center;
   flex: 1;
+  @include flex-center;
 }
 
 .logo {
@@ -49,10 +49,10 @@
 }
 
 .iconBtn {
+  @include flex-center;
   background: none;
   border: none;
   cursor: pointer;
-  @include flex-center;
   transition: transform 0.2s ease;
 
   &:hover {
@@ -65,27 +65,33 @@
   }
 }
 
-.leftIcons .iconBtn {
-  width: 32px;
-  height: 32px;
-  border: 2.2px solid $primary-color;
-  border-radius: $radius-full;
-  padding: 3.5px;
-
-  @include respond-md {
-    width: 30px;
-    height: 30px;
-  }
-
-  @include respond-sm {
-    width: 23px;
-    height: 23px;
-  }
+.leftIcons,
+.rightIcons {
+  display: flex;
+  align-items: center;
 }
 
 .leftIcons {
   margin-left: 10px;
   gap: 12px;
+
+  .iconBtn {
+    width: 32px;
+    height: 32px;
+    border: 2.2px solid $primary-color;
+    border-radius: $radius-full;
+    padding: 3.5px;
+
+    @include respond-md {
+      width: 30px;
+      height: 30px;
+    }
+
+    @include respond-sm {
+      width: 23px;
+      height: 23px;
+    }
+  }
 }
 
 .rightIcons {
@@ -95,12 +101,6 @@
   @include respond-md {
     gap: 5px;
   }
-}
-
-.leftIcons,
-.rightIcons {
-  display: flex;
-  align-items: center;
 }
 
 .StarImg,
@@ -150,7 +150,5 @@
 .logoButton {
   all: unset;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-center;
 }

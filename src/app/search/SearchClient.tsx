@@ -5,7 +5,7 @@ import { useSearchList } from '@/Hooks';
 import { ItemsGrid, EmptyState } from '@/Components/UI';
 import Loading from '@/Components/UI/Loading/LoadingClient';
 
-export default function SearchClient() {
+const SearchClient = () => {
   const searchParams = useSearchParams();
   const query = searchParams.get('query') ?? '';
   const { results, loading } = useSearchList(query);
@@ -25,3 +25,5 @@ export default function SearchClient() {
     </main>
   );
 }
+
+export default  SearchClient

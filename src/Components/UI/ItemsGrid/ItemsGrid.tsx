@@ -1,10 +1,10 @@
 'use client';
 
 import styles from './ItemsGrid.module.scss';
-import { ItemsGridProps } from '@/types';
+import { ItemsGridProps } from '../../../../types/itemComponent';
 import { ItemCard } from '@/Components/UI';
 
-export default function ItemsGrid({ items }: ItemsGridProps) {
+const ItemsGrid = ({ items }: ItemsGridProps) => {
   return (
     <section className={styles.itemsGrid}>
       {items.map((item, i) => (
@@ -19,3 +19,5 @@ export default function ItemsGrid({ items }: ItemsGridProps) {
     </section>
   );
 }
+
+export default ItemsGrid
