@@ -2,7 +2,7 @@
 @use "@/styles/mixins" as *;
 
 .categoryPage {
-  padding: $space-lg $space-sm;
+  padding:  0 $space-md $space-sm;
 
   @include respond-sm {
     padding: $space-md $space-sm;
