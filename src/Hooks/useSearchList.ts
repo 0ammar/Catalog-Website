@@ -1,5 +1,7 @@
-import { useEffect, useState, useRef } from 'react';
-import { searchItemsGlobal, getItems, getItemsByStatus } from '@/Services/itemServices';
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import { getItems, searchItemsGlobal } from '@/Services/itemServices';
 import { Item } from '@/types/apiTypes';
 
 interface Options {
@@ -7,53 +9,47 @@ interface Options {
   subOneId?: string;
   subTwoId?: string;
   subThreeId?: string;
-  statusId?: string;
   isGlobal?: boolean;
   pageSize?: number;
 }
 
-export default function useSearchList(options: Options) {
-  const {
-    groupId,
-    subOneId,
-    subTwoId,
-    subThreeId,
-    statusId,
-    isGlobal = false,
-    pageSize = 30,
-  } = options;
-
+export default function useSearchList({
+  groupId,
+  subOneId,
+  subTwoId,
+  subThreeId,
+  isGlobal = false,
+  pageSize = 30,
+}: Options) {
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
-  const [data, setData] = useState<Item[]>([]);
+  const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(false);
-  const [internalLoading, setInternalLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Handle query debounce
   useEffect(() => {
-    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
 
-    setInternalLoading(true);
-
-    debounceTimer.current = setTimeout(() => {
+    debounceRef.current = setTimeout(() => {
       setPage(1);
       setDebouncedQuery(query.trim());
-
-      setTimeout(() => setInternalLoading(false), 300);
-    }, 1000);
+    }, 500);
 
     return () => {
-      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+      if (debounceRef.current) clearTimeout(debounceRef.current);
     };
   }, [query]);
 
+  // Fetch items on debouncedQuery or page
   useEffect(() => {
     const fetchData = async () => {
       if (!debouncedQuery) {
-        setData([]);
+        setItems([]);
         setHasMore(false);
         return;
       }
@@ -66,13 +62,6 @@ export default function useSearchList(options: Options) {
 
         if (isGlobal) {
           result = await searchItemsGlobal(debouncedQuery, page);
-        } else if (statusId) {
-          result = await getItemsByStatus(statusId, page, pageSize);
-          result = result.filter(
-            (item) =>
-              item.name.toLowerCase().includes(debouncedQuery.toLowerCase()) ||
-              item.itemNo.includes(debouncedQuery)
-          );
         } else if (groupId && subOneId) {
           result = await getItems(
             groupId,
@@ -85,14 +74,10 @@ export default function useSearchList(options: Options) {
           );
         }
 
-        setData((prev) => (page === 1 ? result : [...prev, ...result]));
+        setItems((prev) => (page === 1 ? result : [...prev, ...result]));
         setHasMore(result.length === pageSize);
       } catch (err: unknown) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError('حدث خطأ أثناء البحث');
-        }
+        setError(err instanceof Error ? err.message : 'حدث خطأ أثناء البحث');
       } finally {
         setLoading(false);
       }
@@ -106,16 +91,15 @@ export default function useSearchList(options: Options) {
     subOneId,
     subTwoId,
     subThreeId,
-    statusId,
     isGlobal,
-    pageSize, 
+    pageSize,
   ]);
 
   return {
-    data,
     query,
     setQuery,
-    loading: loading || internalLoading,
+    items,
+    loading,
     error,
     page,
     setPage,
@@ -124,7 +108,7 @@ export default function useSearchList(options: Options) {
       setQuery('');
       setDebouncedQuery('');
       setPage(1);
-      setData([]);
+      setItems([]);
       setHasMore(true);
     },
   };

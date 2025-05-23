@@ -1,14 +1,13 @@
 'use client';
 
 import styles from './CategoryPage.module.scss';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ItemsPage, Searchbar } from '@/Components/Layout';
 import { CategoryGrid, EmptyState, Pagination } from '@/Components/UI';
 import Loading from '@/Components/UI/Loading/Loading';
 
 import { useItemLogic, useCategory, useSearchList } from '@/Hooks';
-import { getSubThrees } from '@/Services/groupServices';
 
 type Props = {
   path: string[];
@@ -23,67 +22,41 @@ const CategoryPage = ({ path }: Props) => {
     uploadImage,
     deleteImage,
     refetch,
+    shouldShowItems,
+    selectedCategoryName,
+    handleCategoryClick,
   } = useCategory(path);
 
-  const [page, setPage] = useState(1);
-  const [hasSubThrees, setHasSubThrees] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
 
-  const levelNames = useMemo(() => (
-    ['المجموعات', 'الفئة الأولى', 'الفئة الثانية', 'الفئة الثالثة', 'العناصر']
-  ), []);
-
-  const currentLevelName = useMemo(() => levelNames[level], [level, levelNames]);
-
-  const shouldShowCategoryItems = useMemo(() => (
-    (level === 2 && !hasSubThrees && ids.subTwoId) ||
-    (level === 3 && ids.subThreeId) ||
-    level === 4
-  ), [level, hasSubThrees, ids]);
-
-  const shouldShowItemsPage = useMemo(() => (
-    isSearching || shouldShowCategoryItems
-  ), [isSearching, shouldShowCategoryItems]);
-
-  useEffect(() => {
-    const checkSubThrees = async () => {
-      if (level === 2 && ids.groupId && ids.subOneId && ids.subTwoId) {
-        try {
-          const result = await getSubThrees(ids.groupId, ids.subOneId, ids.subTwoId);
-          setHasSubThrees(result.length > 0);
-        } catch {
-          setHasSubThrees(false);
-        }
-      }
-    };
-    checkSubThrees();
-  }, [level, ids]);
-
   const {
-    data: searchResults,
+    items: searchResults,
     query,
     setQuery,
     loading: searchLoading,
+    page: searchPage,
+    setPage: setSearchPage,
   } = useSearchList({
     groupId: ids.groupId,
     subOneId: ids.subOneId,
     subTwoId: ids.subTwoId,
     subThreeId: ids.subThreeId,
-    isGlobal: !shouldShowCategoryItems,
+    isGlobal: !shouldShowItems,
     pageSize: 30,
   });
 
   const {
     data: categoryItems,
     loading: itemLoading,
+    page,
+    setPage,
   } = useItemLogic({
     groupId: ids.groupId,
     subOneId: ids.subOneId,
     subTwoId: ids.subTwoId,
     subThreeId: ids.subThreeId,
     pageSize: 30,
-    query,
-    page,
+    page: searchPage, 
   });
 
   useEffect(() => {
@@ -92,40 +65,40 @@ const CategoryPage = ({ path }: Props) => {
 
   const showItems = isSearching ? searchResults : categoryItems;
   const isLoading = isSearching ? searchLoading : itemLoading;
+  const currentPage = isSearching ? searchPage : page;
+  const updatePage = isSearching ? setSearchPage : setPage;
 
-  if (!currentLevelName) {
-    return <EmptyState title="مسار غير صحيح" message="لم يتم العثور على مجموعة مطابقة" />;
-  }
+  if (categoryLoading) return <Loading />;
 
-  if (categoryLoading) {
-    return <Loading />;
-  }
+  const showItemsPage = isSearching || shouldShowItems;
 
   return (
     <main className={styles.categoryPage}>
       <Searchbar onQueryChange={setQuery} />
 
-      {shouldShowItemsPage ? (
+      {showItemsPage ? (
         <>
           <ItemsPage
-            title={currentLevelName}
+            title={selectedCategoryName ?? 'العناصر'}
             items={showItems}
             loading={isLoading}
           />
           {!query && (
             <Pagination
-              page={page}
+              page={currentPage}
               pageSize={30}
               currentCount={categoryItems.length}
-              onPageChange={(newPage) => setPage(newPage)}
+              onPageChange={updatePage}
             />
           )}
         </>
       ) : (
         <>
-          <h1 className={styles.pageTitle}>
-            {currentLevelName} ({categories.length})
-          </h1>
+          {level > 0 && (
+            <h1 className={styles.pageTitle}>
+              {selectedCategoryName} ({categories.length})
+            </h1>
+          )}
 
           {categories.length === 0 ? (
             <EmptyState
@@ -135,7 +108,7 @@ const CategoryPage = ({ path }: Props) => {
           ) : (
             <CategoryGrid
               data={categories}
-              path={path}
+              onClick={handleCategoryClick}
               uploadImage={uploadImage}
               deleteImage={deleteImage}
               refetch={refetch}

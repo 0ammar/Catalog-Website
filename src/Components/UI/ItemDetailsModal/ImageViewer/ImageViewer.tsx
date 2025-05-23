@@ -10,6 +10,7 @@ type Props = {
 };
 
 const ImageViewer = ({ imageUrl, onClose }: Props) => {
+  // Prevent page scroll while viewer is open
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -21,15 +22,20 @@ const ImageViewer = ({ imageUrl, onClose }: Props) => {
     <div className={styles.viewerWrapper}>
       <div className={styles.overlay} onClick={onClose} />
 
+      {/* Modal */}
       <div className={styles.modal}>
-        <button className={styles.closeBtn} onClick={onClose}>
+        <button
+          className={styles.closeBtn}
+          onClick={onClose}
+          aria-label="Close image viewer"
+        >
           ×
         </button>
 
         <div className={styles.imageWrapper}>
           <Image
             src={imageUrl}
-            alt="عرض الصورة"
+            alt="عرض الصورة بالحجم الكامل"
             fill
             sizes="(max-width: 768px) 90vw, 90vh"
             className={styles.image}

@@ -20,21 +20,17 @@ const ImageCarousel = ({ images = [], onImageClick }: Props) => {
 
   const hasImages = images.length > 0;
 
-  const displayedImages = useMemo(() => {
-    return hasImages ? images : [fallbackImage as unknown as string];
-  }, [hasImages, images]);
+  // Use fallback if no images provided
+  const displayedImages = useMemo(() => (
+    hasImages ? images : [fallbackImage as unknown as string]
+  ), [hasImages, images]);
 
   const goNext = () => setIndex((prev) => (prev + 1) % displayedImages.length);
   const goPrev = () => setIndex((prev) => (prev - 1 + displayedImages.length) % displayedImages.length);
 
-  const handleTouchStart = (e: TouchEvent) => {
-    setTouchStartX(e.touches[0].clientX);
-  };
-
-  const handleTouchMove = (e: TouchEvent) => {
-    setTouchEndX(e.touches[0].clientX);
-  };
-
+  // Mobile touch handlers
+  const handleTouchStart = (e: TouchEvent) => setTouchStartX(e.touches[0].clientX);
+  const handleTouchMove = (e: TouchEvent) => setTouchEndX(e.touches[0].clientX);
   const handleTouchEnd = () => {
     if (touchStartX === null || touchEndX === null) return;
     const delta = touchStartX - touchEndX;
@@ -44,6 +40,7 @@ const ImageCarousel = ({ images = [], onImageClick }: Props) => {
     setTouchEndX(null);
   };
 
+  // Scroll to active image
   useEffect(() => {
     if (wrapperRef.current) {
       wrapperRef.current.scrollTo({

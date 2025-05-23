@@ -18,14 +18,16 @@ interface Props {
 
 const ImageControls = ({ itemId, images, onUploadSuccess, onDeleteSuccess }: Props) => {
   const router = useRouter();
+
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
+  // Upload new item images
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (!files || files.length === 0) return;
+    if (!files?.length) return;
 
     setUploading(true);
     try {
@@ -40,12 +42,14 @@ const ImageControls = ({ itemId, images, onUploadSuccess, onDeleteSuccess }: Pro
     }
   };
 
+  // Toggle image selection for deletion
   const toggleImage = (src: string) => {
     setSelectedImages((prev) =>
       prev.includes(src) ? prev.filter((i) => i !== src) : [...prev, src]
     );
   };
 
+  // Confirm and delete selected images
   const confirmDelete = async () => {
     if (selectedImages.length === 0) return;
 
@@ -78,7 +82,13 @@ const ImageControls = ({ itemId, images, onUploadSuccess, onDeleteSuccess }: Pro
 
         <label className={`${styles.uploadBtn} ${uploading ? styles.disabled : ''}`}>
           {uploading ? 'جاري الرفع...' : 'رفع الصور'}
-          <input type="file" hidden multiple onChange={handleUpload} disabled={uploading} />
+          <input
+            type="file"
+            hidden
+            multiple
+            onChange={handleUpload}
+            disabled={uploading}
+          />
         </label>
       </div>
 
@@ -105,18 +115,15 @@ const ImageControls = ({ itemId, images, onUploadSuccess, onDeleteSuccess }: Pro
               </div>
 
               <div className={styles.grid}>
-                {images.map((img, i) => {
-                  const selected = selectedImages.includes(img);
-                  return (
-                    <div
-                      key={i}
-                      className={`${styles.imageCard} ${selected ? styles.selected : ''}`}
-                      onClick={() => toggleImage(img)}
-                    >
-                      <Image src={img} alt={`delete-${i}`} width={90} height={80} />
-                    </div>
-                  );
-                })}
+                {images.map((img, i) => (
+                  <div
+                    key={i}
+                    className={`${styles.imageCard} ${selectedImages.includes(img) ? styles.selected : ''}`}
+                    onClick={() => toggleImage(img)}
+                  >
+                    <Image src={img} alt={`delete-${i}`} width={90} height={80} />
+                  </div>
+                ))}
               </div>
 
               <div className={styles.modalActions}>
@@ -135,5 +142,4 @@ const ImageControls = ({ itemId, images, onUploadSuccess, onDeleteSuccess }: Pro
     </div>
   );
 };
-
 export default ImageControls;

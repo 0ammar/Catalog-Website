@@ -4,49 +4,46 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   getItemByItemNo,
-  getItemImage,
   getItemStatuses,
   updateItemStatus,
   getItemImagesOnly,
+  getItemImage,
+  uploadItemImages,
+  deleteItemImages,
 } from '@/Services/itemServices';
 import { GetItemDto, ItemStatuses } from '@/types/apiTypes';
 
-// ✅ النوع المخصص للتفاصيل (حل ذكي للمشكلة)
-type ItemDetails = GetItemDto & {
+export type ItemDetails = GetItemDto & {
   firstImage?: string;
+  images?: string[];
 };
 
 export default function useItemDetails(itemNo: string) {
   const router = useRouter();
 
   const [item, setItem] = useState<ItemDetails | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const [statuses, setStatuses] = useState<ItemStatuses[]>([]);
   const [itemStatus, setItemStatus] = useState<ItemStatuses | null>(null);
   const [statusLoading, setStatusLoading] = useState(false);
 
-  const [previewImageName, setPreviewImageName] = useState<string | null>(null);
-  const [fullImageUri, setFullImageUri] = useState<string | null>(null);
-  const cache = useRef<Record<string, string>>({});
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [fullImageUrl, setFullImageUrl] = useState<string | null>(null);
+  const imageCache = useRef<Record<string, string>>({});
 
-  const [showFullDescription, setShowFullDescription] = useState(false);
-  const descriptionRef = useRef<HTMLDivElement | null>(null);
+  const [expandedDescription, setExpandedDescription] = useState(false);
 
-  const fetchItem = useCallback(async () => {
+  const fetchItemDetails = useCallback(async () => {
+    setLoading(true);
     try {
-      setLoading(true);
       const data = await getItemByItemNo(itemNo);
       const images = await getItemImagesOnly(itemNo);
       setItem({ ...data, images });
+      setItemStatus(data.status ?? null);
     } catch (err: unknown) {
-      console.error('❌ Error loading item:', err);
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Failed to load item.');
-      }
+      setError(err instanceof Error ? err.message : 'Failed to load item');
     } finally {
       setLoading(false);
     }
@@ -54,64 +51,66 @@ export default function useItemDetails(itemNo: string) {
 
   const fetchStatuses = useCallback(async () => {
     try {
-      const data = await getItemStatuses();
-      setStatuses(data);
-    } catch (err: unknown) {
-      console.error('❌ Failed to load statuses:', err);
+      const result = await getItemStatuses();
+      setStatuses(result);
+    } catch (err) {
+      console.error('❌ Failed to fetch statuses:', err);
     }
   }, []);
 
-  const changeStatus = async (newStatusId: string) => {
+  const changeStatus = async (newStatusId: string, onStatusUpdate?: () => void) => {
     if (statusLoading) return;
-
     setStatusLoading(true);
     try {
       await updateItemStatus(itemNo, newStatusId);
-      const updatedItem = await getItemByItemNo(itemNo);
-      setItem((prev) => prev ? { ...updatedItem, images: prev.images } : null);
-      setItemStatus(updatedItem.status!);
-    } catch (err: unknown) {
+      const updated = await getItemByItemNo(itemNo);
+      setItem((prev) => (prev ? { ...updated, images: prev.images } : null));
+      setItemStatus(updated.status ?? null);
+      onStatusUpdate?.(); // ✅ Notify parent
+    } catch (err) {
       console.error('❌ Failed to update status:', err);
     } finally {
       setStatusLoading(false);
     }
   };
 
-  const handleOpenImage = async (imgName: string) => {
-    setPreviewImageName(imgName);
-    if (cache.current[imgName]) {
-      setFullImageUri(cache.current[imgName]);
+  const openImage = async (imageName: string) => {
+    setPreviewImage(imageName);
+    if (imageCache.current[imageName]) {
+      setFullImageUrl(imageCache.current[imageName]);
       return;
     }
-
     try {
-      const uri = await getItemImage(itemNo, imgName);
-      cache.current[imgName] = uri;
-      setFullImageUri(uri);
+      const url = await getItemImage(itemNo, imageName);
+      imageCache.current[imageName] = url;
+      setFullImageUrl(url);
     } catch (err) {
-      console.error('❌ Failed to load image:', err);
+      console.error('❌ Failed to open image:', err);
     }
   };
 
-  const handleCloseImage = () => {
-    setPreviewImageName(null);
-    setFullImageUri(null);
+  const closeImage = () => {
+    setPreviewImage(null);
+    setFullImageUrl(null);
   };
 
-  const toggleDescription = () => {
-    if (!showFullDescription && descriptionRef.current) {
-      descriptionRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-    setShowFullDescription((prev) => !prev);
+  const uploadImages = async (files: File[]) => {
+    await uploadItemImages(itemNo, files);
+    await fetchItemDetails();
+    router.refresh();
   };
 
-  const handleUpload = () => router.push(`/ItemDetails/upload/${itemNo}`);
-  const handleEdit = () => router.push(`/ItemDetails/edit/${itemNo}`);
+  const deleteImages = async (imageUrls: string[]) => {
+    const names = imageUrls.map((url) => url.split('/').pop() ?? '');
+    await deleteItemImages(itemNo, names);
+    await fetchItemDetails();
+    router.refresh();
+  };
 
   useEffect(() => {
-    fetchItem();
+    fetchItemDetails();
     fetchStatuses();
-  }, [fetchItem, fetchStatuses]);
+  }, [fetchItemDetails, fetchStatuses]);
 
   return {
     item,
@@ -119,17 +118,15 @@ export default function useItemDetails(itemNo: string) {
     error,
     statuses,
     itemStatus,
-    statusLoading,
     setItemStatus,
     changeStatus,
-    previewImageName,
-    fullImageUri,
-    handleOpenImage,
-    handleCloseImage,
-    showFullDescription,
-    descriptionRef,
-    toggleDescription,
-    handleUpload,
-    handleEdit,
+    previewImage,
+    fullImageUrl,
+    openImage,
+    closeImage,
+    expandedDescription,
+    toggleDescription: () => setExpandedDescription((prev) => !prev),
+    uploadImages,
+    deleteImages,
   };
 }

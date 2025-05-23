@@ -1,14 +1,15 @@
-"use client";
+'use client';
 
-import styles from "./CategoryCard.module.scss";
-import Image from "next/image";
-import { FiUploadCloud, FiRefreshCw } from "react-icons/fi";
-import { useRef, useEffect, useState } from "react";
+import styles from './CategoryCard.module.scss';
+import { useRef } from 'react';
+import Image from 'next/image';
+import { FiUploadCloud, FiRefreshCw } from 'react-icons/fi';
 
 export type CategoryCardProps = {
   id: string;
   name: string;
   imageUrl: string;
+  isAdmin?: boolean;
   onClick?: () => void;
   uploadImage?: (file: File) => void;
   deleteImage?: (imageUrl: string) => void;
@@ -17,17 +18,12 @@ export type CategoryCardProps = {
 const CategoryCard = ({
   name,
   imageUrl,
+  isAdmin = false,
   onClick,
   uploadImage,
   deleteImage,
 }: CategoryCardProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  useEffect(() => {
-    const role = localStorage.getItem("isAdmin");
-    setIsAdmin(role === "true");
-  }, []);
 
   const handleUploadClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -67,7 +63,7 @@ const CategoryCard = ({
         <div className={styles.buttonsWrapper} onClick={(e) => e.stopPropagation()}>
           <FiRefreshCw
             className={styles.icon}
-            title="Reset"
+            title="Delete"
             onClick={handleDelete}
           />
           <FiUploadCloud

@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { getItems, getItemsByStatus } from '@/Services/itemServices';
 import { Item } from '@/types/apiTypes';
@@ -9,8 +11,7 @@ interface Params {
   subThreeId?: string;
   statusId?: string;
   pageSize?: number;
-  query?: string;
-  page?: number;
+  page?: number; 
 }
 
 export default function useItemLogic({
@@ -20,16 +21,22 @@ export default function useItemLogic({
   subThreeId,
   statusId,
   pageSize = 30,
-  query,
-  page = 1,
+  page: initialPage = 1,
 }: Params) {
   const [data, setData] = useState<Item[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(initialPage);
 
   useEffect(() => {
     const fetchItems = async () => {
-      if (query) return;
+      const shouldFetchByStatus = Boolean(statusId);
+      const shouldFetchByCategory = groupId && subOneId;
+
+      if (!shouldFetchByStatus && !shouldFetchByCategory) {
+        setData([]);
+        return;
+      }
 
       setLoading(true);
       setError(null);
@@ -37,44 +44,28 @@ export default function useItemLogic({
       try {
         let result: Item[] = [];
 
-        if (statusId) {
-          result = await getItemsByStatus(statusId, page, pageSize);
-        } else if (groupId && subOneId) {
-          result = await getItems(
-            groupId,
-            subOneId,
-            subTwoId,
-            subThreeId,
-            page,
-            pageSize
-          );
+        if (shouldFetchByStatus) {
+          result = await getItemsByStatus(statusId!, page, pageSize);
+        } else if (shouldFetchByCategory) {
+          result = await getItems(groupId!, subOneId!, subTwoId, subThreeId, page, pageSize);
         }
-
-        console.log("🧠 العناصر الراجعة من API:");
-        console.table(result.map((item) => ({
-          itemNo: item.itemNo,
-          name: item.name,
-          status: item.status?.code || 'بدون حالة'
-        })));
 
         setData(result);
       } catch (err: unknown) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError('حدث خطأ أثناء جلب العناصر');
-        }
+        setError(err instanceof Error ? err.message : 'حدث خطأ أثناء جلب العناصر');
       } finally {
         setLoading(false);
       }
     };
 
     fetchItems();
-  }, [groupId, subOneId, subTwoId, subThreeId, statusId, page, pageSize, query]);
+  }, [groupId, subOneId, subTwoId, subThreeId, statusId, page, pageSize]);
 
   return {
     data,
     loading,
     error,
+    page,
+    setPage,
   };
 }

@@ -1,9 +1,10 @@
 'use client';
 
 import styles from './ItemsPage.module.scss';
-import { ItemsGrid, EmptyState } from '@/Components/UI';
-import Loading from '@/Components/UI/Loading/Loading';
 import { Item } from '@/types/apiTypes';
+import Loading from '@/Components/UI/Loading/Loading';
+
+import { ItemsGrid, EmptyState } from '@/Components/UI';
 
 type Props = {
   title?: string;
@@ -12,7 +13,7 @@ type Props = {
 };
 
 const ItemsPage = ({ title, items, loading = false }: Props) => {
-const showEmpty = !loading && Array.isArray(items) && items.length === 0;
+  const showEmpty = !loading && items.length === 0;
 
   return (
     <main className={styles.itemsPage}>

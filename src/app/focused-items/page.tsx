@@ -1,24 +1,20 @@
 'use client';
 
-import { useState } from 'react';
 import { ItemsPage, Searchbar } from '@/Components/Layout';
 import Pagination from '@/Components/UI/Pagination/Pagination';
-import useItemLogic from '@/Hooks/useItemLogic';
 import EmptyState from '@/Components/UI/EmptyState/EmptyState';
+import useStatusItemsWithSearch from '@/Hooks/useStatusItemsWithSearch';
 
 const FocusedItemsPage = () => {
-  const statusId = '4';
-  const pageSize = 30;
-
-  const [query, setQuery] = useState('');
-  const [page, setPage] = useState(1);
-
-  const { data, loading } = useItemLogic({
-    statusId,
-    pageSize,
+  const {
     query,
+    setQuery,
     page,
-  });
+    setPage,
+    items,
+    loading,
+    total,
+  } = useStatusItemsWithSearch('4');
 
   return (
     <>
@@ -29,21 +25,21 @@ const FocusedItemsPage = () => {
         }}
       />
 
-      {!loading && data.length === 0 ? (
+      {!loading && items.length === 0 ? (
         <EmptyState
           title="لا توجد عناصر"
           message="لم يتم العثور على عناصر مميزة."
         />
       ) : (
-        <ItemsPage title="العناصر المميزة" items={data} loading={loading} />
+        <ItemsPage title="العناصر المميزة" items={items} loading={loading} />
       )}
 
       {!query && (
         <Pagination
           page={page}
-          pageSize={pageSize}
-          currentCount={data.length}
-          onPageChange={(newPage) => setPage(newPage)}
+          pageSize={30}
+          currentCount={total}
+          onPageChange={setPage}
         />
       )}
     </>

@@ -1,5 +1,3 @@
-// ✅ Finalized Next.js itemServices.ts - fully aligned with React Native logic
-
 import { api } from '@/Services/axios';
 import { Item, GetItemDto, ItemStatuses } from '@/types/apiTypes';
 

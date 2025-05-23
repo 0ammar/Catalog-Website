@@ -8,7 +8,7 @@
   padding: 2px $space-md;
   width: 100%;
   max-width: 450px;
-  margin: 10px auto 20px;
+  margin: 0px auto 20px;
   position: relative;
 
   @include flex-center;
@@ -46,7 +46,7 @@
   @include respond-sm {
     height: 30px;
     padding-left: 38px;
-    font-size: 15px;
+    font-size: 14px;
   }
 }
 

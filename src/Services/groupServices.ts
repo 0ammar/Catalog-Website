@@ -54,7 +54,7 @@ const uploadImage = async (level: string, id: string, file: File): Promise<boole
     const formData = new FormData();
     formData.append('file', file, file.name);
 
-    await api.post(`/api/admin/${level}/${id}`, formData); // let browser set content-type
+    await api.post(`/api/admin/${level}/${id}`, formData); 
     console.log(`✅ Uploaded image for ${level} (${id})`);
     return true;
   } catch (err) {

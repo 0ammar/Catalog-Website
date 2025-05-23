@@ -1,17 +1,19 @@
 'use client';
 
 import styles from './ItemCard.module.scss';
-import { Item } from '@/types/apiTypes';
-import Image from 'next/image';
 import { useState } from 'react';
-import ItemDetailsModal from '@/Components/UI/ItemDetailsModal/ItemDetails';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+
+import ItemDetailsModal from '@/Components/UI/ItemDetailsModal/ItemDetails';
+import { Item } from '@/types/apiTypes';
+
 
 type Props = {
   item: Item;
 };
 
-export default function ItemCard({ item }: Props) {
+const ItemCard = ({ item }: Props) => {
   const [showDetails, setShowDetails] = useState(false);
   const router = useRouter();
 
@@ -56,3 +58,4 @@ export default function ItemCard({ item }: Props) {
     </>
   );
 }
+export default ItemCard
