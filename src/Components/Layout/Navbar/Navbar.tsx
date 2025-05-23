@@ -29,8 +29,8 @@ const Navbar = () => {
       </div>
 
       <div className={styles.logoContainer}>
-        <button className={styles.logoButton} title="Home" onClick={() => router.push('/')}>
-          <Image src={Logo} alt="Logo" className={styles.logo} />
+        <button className={styles.logoButton} title="Home" onClick={() => router.push('/categories')}>
+          <Image src={Logo} alt="Logo" className={styles.logo} priority/>
         </button>
       </div>
 
@@ -38,7 +38,7 @@ const Navbar = () => {
       <div className={styles.rightIcons}>
         {rightIcons.map((item, i) => (
           <button key={i} className={styles.iconBtn} title={item.title} onClick={() => router.push(item.href)}>
-            <Image src={item.src} alt={item.alt} className={item.className} />
+            <Image src={item.src} alt={item.alt} className={item.className} priority/>
           </button>
         ))}
       </div>

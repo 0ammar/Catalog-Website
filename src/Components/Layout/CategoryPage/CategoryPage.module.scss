@@ -11,7 +11,7 @@
 
 .pageTitle {
   @include section-title;
-  margin-bottom: $space-md;
+  margin-bottom: $space-lg;
 
   @include respond-sm {
     font-size: $font-md;

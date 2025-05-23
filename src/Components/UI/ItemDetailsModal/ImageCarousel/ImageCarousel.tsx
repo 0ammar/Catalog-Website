@@ -1,36 +1,47 @@
 'use client';
 
-import styles from './ImageCarousel.module.scss';
-import Image, { StaticImageData } from 'next/image';
-import { useState, useEffect, useRef, TouchEvent } from 'react';
+import { useState, useEffect, useRef, useMemo, TouchEvent } from 'react';
+import Image from 'next/image';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import { motion, AnimatePresence } from 'framer-motion';
+import styles from './ImageCarousel.module.scss';
+import fallbackImage from '@/assets/images/header.png';
 
-interface Props {
-  images: (string | StaticImageData)[];
+type Props = {
+  images?: string[];
   onImageClick: (url: string) => void;
-}
+};
 
-const ImageCarousel = ({ images, onImageClick }: Props) => {
+const ImageCarousel = ({ images = [], onImageClick }: Props) => {
   const [index, setIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
-  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const [touchEndX, setTouchEndX] = useState<number | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const goNext = () => setIndex((prev) => (prev + 1) % images.length);
-  const goPrev = () => setIndex((prev) => (prev - 1 + images.length) % images.length);
+  const hasImages = images.length > 0;
+
+  const displayedImages = useMemo(() => {
+    return hasImages ? images : [fallbackImage as unknown as string];
+  }, [hasImages, images]);
+
+  const goNext = () => setIndex((prev) => (prev + 1) % displayedImages.length);
+  const goPrev = () => setIndex((prev) => (prev - 1 + displayedImages.length) % displayedImages.length);
 
   const handleTouchStart = (e: TouchEvent) => {
     setTouchStartX(e.touches[0].clientX);
   };
 
-  const handleTouchEnd = (e: TouchEvent) => {
-    if (touchStartX === null) return;
-    const delta = e.changedTouches[0].clientX - touchStartX;
+  const handleTouchMove = (e: TouchEvent) => {
+    setTouchEndX(e.touches[0].clientX);
+  };
 
-    if (delta > 50) goPrev();
-    else if (delta < -50) goNext();
-
+  const handleTouchEnd = () => {
+    if (touchStartX === null || touchEndX === null) return;
+    const delta = touchStartX - touchEndX;
+    if (delta > 50) goNext();
+    else if (delta < -50) goPrev();
     setTouchStartX(null);
+    setTouchEndX(null);
   };
 
   useEffect(() => {
@@ -40,52 +51,58 @@ const ImageCarousel = ({ images, onImageClick }: Props) => {
         behavior: 'smooth',
       });
     }
-  }, [index]);
+  }, [index, displayedImages]);
 
   return (
     <div className={styles.carousel}>
-      {!isMobile && (
-        <button className={styles.navBtn} onClick={goPrev} title="السابق">
-          <IoIosArrowBack />
-        </button>
-      )}
+      <button className={styles.navBtn} onClick={goPrev} aria-label="صورة سابقة">
+        <IoIosArrowBack />
+      </button>
 
       <div
         className={styles.imageWrapper}
         ref={wrapperRef}
         onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        {images.map((img, i) => (
-          <Image
-            key={i}
-            src={img}
-            alt={`image-${i}`}
-            width={800}
-            height={500}
-            onClick={() => onImageClick(img as string)}
-            className={styles.image}
-          />
-        ))}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            initial={{ opacity: 0.4, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3 }}
+            className={styles.motionImage}
+          >
+            <Image
+              src={displayedImages[index]}
+              alt={`image-${index}`}
+              width={800}
+              height={500}
+              onClick={() => onImageClick(displayedImages[index])}
+              className={styles.image}
+            />
+          </motion.div>
+        </AnimatePresence>
       </div>
 
-      {!isMobile && (
-        <button className={styles.navBtn} onClick={goNext} title="التالي">
-          <IoIosArrowForward />
-        </button>
-      )}
+      <button className={styles.navBtn} onClick={goNext} aria-label="صورة تالية">
+        <IoIosArrowForward />
+      </button>
 
       <div className={styles.dots}>
-        {images.map((_, i) => (
+        {displayedImages.map((_, i) => (
           <div
             key={i}
             className={`${styles.dot} ${i === index ? styles.active : ''}`}
             onClick={() => setIndex(i)}
+            aria-label={`انتقال للصورة رقم ${i + 1}`}
           />
         ))}
       </div>
     </div>
   );
-}
+};
 
-export default ImageCarousel
+export default ImageCarousel;

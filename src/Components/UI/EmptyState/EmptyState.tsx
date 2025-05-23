@@ -20,6 +20,7 @@ const EmptyState = ({
         width={220}
         height={220}
         className={styles.image}
+        priority 
       />
       <h2 className={styles.title}>{title}</h2>
       <p className={styles.message}>{message}</p>

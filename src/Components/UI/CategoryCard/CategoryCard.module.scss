@@ -12,6 +12,7 @@
   gap: $space-md;
   width: 100%;
   max-width: 280px;
+
   @include card-hover-3d;
   @include card-shadow;
 
@@ -22,9 +23,10 @@
 }
 
 .imgTitle {
-  @include flex-vertical;
   gap: $space-sm;
   width: 100%;
+
+  @include flex-vertical;
 }
 
 .categImg {
@@ -44,8 +46,9 @@
   color: $text-color;
   text-align: center;
 
-  @include respond-sm {
-    font-size: $font-sm;
+  @include respond-md {
+    font-size: 12px;
+    margin-bottom: 10px;
   }
 }
 
@@ -63,7 +66,7 @@
   transition: transform 0.2s ease;
 
   @include respond-md {
-  font-size: 1rem;
+    font-size: 1rem;
   }
 
   &:hover {

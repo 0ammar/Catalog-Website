@@ -1,6 +1,6 @@
 @use "./variables" as *;
 
-// === Centarized  ===
+// === Centered ===
 @mixin flex-center {
   display: flex;
   justify-content: center;
@@ -8,11 +8,14 @@
 }
 
 @mixin flex-vertical {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  & {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 }
+
 
 @mixin absolute-center {
   position: absolute;
@@ -21,11 +24,14 @@
   transform: translate(-50%, -50%);
 }
 
+// === Card Shadow ===
 @mixin card-shadow {
-  box-shadow: 0 12px 18px rgba(0, 0, 0, 0.08);
+  & {
+    box-shadow: 0 12px 18px rgba(0, 0, 0, 0.08);
+  }
 }
 
-// === Title Style ===
+// === Section Title ===
 @mixin section-title {
   font-size: $font-xl;
   font-weight: $weight-bold;
@@ -34,7 +40,7 @@
   margin-bottom: $space-md;
 }
 
-// === Responsive ===
+// === Responsive Breakpoints ===
 $break-sm: 576px;
 $break-md: 768px;
 $break-lg: 992px;
@@ -85,12 +91,18 @@ $break-xl: 1200px;
   @include flex-center;
 }
 
+// === Card Hover 3D ===
 @mixin card-hover-3d {
-  perspective: 1000px;
-  cursor: pointer;
+  & {
+    perspective: 1000px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
   &:hover {
     transform: rotateX(3deg) rotateY(-3deg) scale(1.01);
-    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.15);
+    & {
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.15);
+    }
   }
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

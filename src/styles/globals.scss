@@ -4,6 +4,8 @@
 /* ========== Reset ========== */
 * {
   box-sizing: border-box;
+  -webkit-user-select: none;
+  user-select: none;
   margin: 0;
   padding: 0;
 }

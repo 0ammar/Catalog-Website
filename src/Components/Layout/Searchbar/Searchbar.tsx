@@ -2,23 +2,25 @@
 
 import styles from './Searchbar.module.scss';
 import { IoSearch } from 'react-icons/io5';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-const Searchbar = () => {
+type Props = {
+  onQueryChange: (query: string) => void;
+};
 
+const Searchbar = ({ onQueryChange }: Props) => {
   const [query, setQuery] = useState('');
-  const router = useRouter();
-  
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!query.trim()) return;
 
-    router.push(`/search?query=${encodeURIComponent(query.trim())}`);
-  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onQueryChange(query.trim());
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [query, onQueryChange]);
 
   return (
-    <form className={styles.searchBar} onSubmit={handleSubmit}>
+    <form className={styles.searchBar} onSubmit={(e) => e.preventDefault()}>
       <input
         className={styles.inputField}
         type="text"
@@ -31,5 +33,6 @@ const Searchbar = () => {
       </button>
     </form>
   );
-}
-export default Searchbar
+};
+
+export default Searchbar;

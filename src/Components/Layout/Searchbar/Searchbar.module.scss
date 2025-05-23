@@ -2,16 +2,17 @@
 @use "@/styles/variables" as *;
 
 .searchBar {
-  @include flex-center;
-  @include card-shadow;
   background-color: $white;
   border: 1px solid $border-color;
   border-radius: $radius-md $radius-xl;
   padding: 2px $space-md;
   width: 100%;
   max-width: 450px;
-  margin: 10px auto 0;
+  margin: 10px auto 20px;
   position: relative;
+
+  @include flex-center;
+  @include card-shadow;
 
   @include respond-sm {
     flex-direction: column;
@@ -20,6 +21,7 @@
     gap: $space-sm;
   }
 }
+
 
 .inputField {
   flex: 1;

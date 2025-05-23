@@ -1,42 +1,79 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { toast } from 'react-toastify';
 import styles from './StatusButtons.module.scss';
-import { HiOutlineCheck, HiOutlineHeart, HiOutlineBan, HiOutlineSparkles } from 'react-icons/hi';
 
-type StatusType = 'New' | 'Focused' | 'Active' | 'InActive';
+import { getItemStatuses, updateItemStatus } from '@/Services/itemServices';
+import { ItemStatuses } from '@/types/apiTypes';
 
 type Props = {
   itemId: string;
-  status: StatusType;
-  onStatusChange?: (newStatus: StatusType) => void;
+  status?: string;
+  onStatusChange?: (newStatus: ItemStatuses) => void;
 };
 
-const statusOptions: { key: StatusType; icon: React.ReactNode; title: string }[] = [
-  { key: 'Active', icon: <HiOutlineCheck />, title: 'Active' },
-  { key: 'InActive', icon: <HiOutlineBan />, title: 'InActive' },
-  { key: 'New', icon: <HiOutlineSparkles />, title: 'New' },
-  { key: 'Focused', icon: <HiOutlineHeart />, title: 'Focused' },
-];
-
 const StatusButtons = ({ itemId, status, onStatusChange }: Props) => {
-  const handleClick = (newStatus: StatusType) => {
-    console.log(`Item ${itemId} changed to ${newStatus}`);
-    onStatusChange?.(newStatus);
+  const [statuses, setStatuses] = useState<ItemStatuses[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await getItemStatuses();
+        console.log('📥 Available statuses:', data);
+        setStatuses(data);
+      } catch {
+        toast.error('❌ فشل في تحميل الحالات');
+      }
+    })();
+  }, []);
+
+  const handleUpdate = async (code: string) => {
+    if (loading || code === status) return;
+
+    setLoading(true);
+    try {
+      console.log('🔄 Updating status for:', itemId, 'to code:', code);
+      await updateItemStatus(itemId, code);
+      const updatedStatus = statuses.find((s) => s.code === code);
+      console.log('📤 Sent to onStatusChange:', updatedStatus);
+      if (updatedStatus) onStatusChange?.(updatedStatus);
+      toast.success('✅ تم تحديث الحالة');
+    } catch (error) {
+      console.error('❌ Error in handleUpdate:', error);
+      toast.error('❌ فشل في تحديث الحالة');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className={styles.statusButtons}>
-      {statusOptions.map(({ key, icon, title }) => (
-        <button
-          key={key}
-          className={`${styles.iconBtn} ${status === key ? styles.active : ''}`}
-          title={title}
-          onClick={() => handleClick(key)}
-        >
-          {icon}
-        </button>
-      ))}
+      {statuses.map((s) => {
+        const isActive = status?.toLowerCase() === s.code.toLowerCase();
+
+        return (
+          <button
+            key={s.id}
+            title={s.name}
+            disabled={loading}
+            onClick={() => handleUpdate(s.code)}
+            className={`${styles.iconBtn} ${isActive ? styles.active : ''}`}
+          >
+            <Image
+              src={s.iconUrl}
+              alt={s.name}
+              width={20}
+              height={20}
+              unoptimized
+            />
+          </button>
+        );
+      })}
     </div>
   );
-}
-export default StatusButtons
+};
+
+export default StatusButtons;

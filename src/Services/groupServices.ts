@@ -1,76 +1,89 @@
-// src/services/groupApi.ts
 import { api } from '@/Services/axios';
 import { Group, SubOne, SubTwo, SubThree } from '@/types/apiTypes';
 
+// =================== FETCH ===================
+
 export const getGroups = async (): Promise<Group[]> => {
   try {
-    const response = await api.get<Group[]>('/api/groups');
-    return response.data;
+    const { data } = await api.get<Group[]>('/api/groups');
+    return data;
   } catch (err) {
-    console.error('❌ Error fetching groups:', err);
+    console.error('❌ Failed to fetch groups:', err);
     return [];
   }
 };
 
 export const getSubOnes = async (groupId: string): Promise<SubOne[]> => {
   try {
-    const response = await api.get<SubOne[]>(`/api/subones/${groupId}`);
-    return response.data;
-  } catch (err: any) {
-    if (err?.response?.status === 404) {
-      console.warn(`⚠️ No SubOnes found for groupId = ${groupId}`);
-    } else {
-      console.error('❌ Error fetching SubOnes:', err);
-    }
+    const { data } = await api.get<SubOne[]>(`/api/subones/${groupId}`);
+    return data;
+  } catch (err) {
+    console.error(`❌ Failed to fetch SubOnes for groupId: ${groupId}`, err);
     return [];
   }
 };
 
-export const getSubTwos = async (
-  groupId: string,
-  subOneId: string
-): Promise<SubTwo[]> => {
+export const getSubTwos = async (groupId: string, subOneId: string): Promise<SubTwo[]> => {
   try {
-    const response = await api.get<SubTwo[]>('/api/subtwos', {
+    const { data } = await api.get<SubTwo[]>('/api/subtwos', {
       params: { groupId, subOneId },
     });
-    return response.data;
+    return data;
   } catch (err) {
-    console.error('❌ Error fetching SubTwos:', err);
+    console.error(`❌ Failed to fetch SubTwos for groupId: ${groupId}, subOneId: ${subOneId}`, err);
     return [];
   }
 };
 
-export const getSubThrees = async (
-  groupId: string,
-  subOneId: string,
-  subTwoId: string
-): Promise<SubThree[]> => {
+export const getSubThrees = async (groupId: string, subOneId: string, subTwoId: string): Promise<SubThree[]> => {
   try {
-    const response = await api.get<SubThree[]>('/api/subthrees', {
+    const { data } = await api.get<SubThree[]>('/api/subthrees', {
       params: { groupId, subOneId, subTwoId },
     });
-    return response.data;
+    return data;
   } catch (err) {
-    console.error('❌ Error fetching SubThrees:', err);
+    console.error(`❌ Failed to fetch SubThrees`, err);
     return [];
   }
 };
 
-export const getSubOneById = async (
-  subOneId: string
-): Promise<SubOne | null> => {
+// =================== IMAGE UPLOAD ===================
+
+const uploadImage = async (level: string, id: string, file: File): Promise<boolean> => {
   try {
-    const allGroups = await getGroups();
-    for (const group of allGroups) {
-      const subOnes = await getSubOnes(group.id);
-      const found = subOnes.find((s) => s.id === subOneId);
-      if (found) return found;
-    }
-    console.warn('⚠️ SubOne not found in any group');
-    return null;
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+
+    await api.post(`/api/admin/${level}/${id}`, formData); // let browser set content-type
+    console.log(`✅ Uploaded image for ${level} (${id})`);
+    return true;
   } catch (err) {
-    console.error('❌ Error in getSubOneById:', err);
-    return null;
+    console.error(`❌ Failed to upload image for ${level} (${id})`, err);
+    return false;
   }
 };
+
+export const uploadGroupImage = (id: string, file: File) => uploadImage('group', id, file);
+export const uploadSubOneImage = (id: string, file: File) => uploadImage('subone', id, file);
+export const uploadSubTwoImage = (id: string, file: File) => uploadImage('subtwo', id, file);
+export const uploadSubThreeImage = (id: string, file: File) => uploadImage('subthree', id, file);
+
+// =================== IMAGE DELETE ===================
+
+const deleteImage = async (level: string, id: string, imageFileName: string): Promise<boolean> => {
+  try {
+    await api.delete(`/api/admin/${level}/${id}`, {
+      params: { imageUrl: imageFileName },
+    });
+    console.log(`🗑️ Deleted image for ${level} (${id})`);
+    return true;
+  } catch (err) {
+    console.error(`❌ Failed to delete image for ${level} (${id})`, err);
+    return false;
+  }
+};
+
+export const deleteGroupImage = (id: string, fileName: string) => deleteImage('group', id, fileName);
+export const deleteSubOneImage = (id: string, fileName: string) => deleteImage('subone', id, fileName);
+export const deleteSubTwoImage = (id: string, fileName: string) => deleteImage('subtwo', id, fileName);
+export const deleteSubThreeImage = (id: string, fileName: string) => deleteImage('subthree', id, fileName);

@@ -1,48 +1,58 @@
 'use client';
 
 import styles from './ItemCard.module.scss';
-import { ItemCardProps } from '../../../types/itemComponent';
+import { Item } from '@/types/apiTypes';
 import Image from 'next/image';
-import { FiCheckCircle } from 'react-icons/fi';
 import { useState } from 'react';
-import ItemDetailsModal from '../ItemDetailsModal/ItemDetails';
-import { img1, img2, img3, img4 } from '@/assets/images'
+import ItemDetailsModal from '@/Components/UI/ItemDetailsModal/ItemDetails';
+import { useRouter } from 'next/navigation';
 
-const ItemCard = ({ name, itemNumber, status = 'Active' }: ItemCardProps) => {
+type Props = {
+  item: Item;
+};
 
+export default function ItemCard({ item }: Props) {
   const [showDetails, setShowDetails] = useState(false);
-
-  const itemDetails = {
-    id: itemNumber,
-    name,
-    itemNumber,
-    description: 'لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً لا يوجد وصف حالياً ',
-    images: [ img1, img2, img3, img4],
-    status,
-    isAdmin: true,
-  };
+  const router = useRouter();
 
   return (
     <>
       <div className={styles.itemCard} onClick={() => setShowDetails(true)}>
         <div className={styles.imageWrapper}>
-          <Image src={img1} alt={name} width={150} height={150} className={styles.image} />
+          <Image
+            src={item.firstImage}
+            alt={item.name}
+            width={150}
+            height={150}
+            className={styles.image}
+            priority
+          />
         </div>
+
         <div className={styles.info}>
-          <h3 className={styles.name}>{name}</h3>
-          <p className={styles.itemNumber}>{itemNumber}</p>
+          <h3 className={styles.name}>{item.name}</h3>
+          <p className={styles.itemNumber}>{item.itemNo}</p>
         </div>
-        {status !== 'Active' && (
-          <div className={styles.statusIcon} title={status}>
-            <FiCheckCircle />
+
+        {item.status?.iconUrl && (
+          <div className={styles.statusIcon} title={item.status?.name}>
+            <Image
+              src={item.status.iconUrl}
+              alt={item.status.name}
+              width={20}
+              height={20}
+            />
           </div>
         )}
       </div>
 
       {showDetails && (
-        <ItemDetailsModal item={itemDetails} onClose={() => setShowDetails(false)} />
+        <ItemDetailsModal
+          itemNo={item.itemNo}
+          onClose={() => setShowDetails(false)}
+          onStatusUpdate={() => router.refresh()} 
+        />
       )}
     </>
   );
 }
-export default ItemCard

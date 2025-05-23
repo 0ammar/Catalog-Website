@@ -8,13 +8,17 @@
   border-radius: $radius-lg;
   padding: $space-md $space-md 0;
   gap: 10px;
-  @include respond-md {
+  @include respond-sm {
     gap: 5px;
+    max-width: 180px;
   }
 
   @include card-shadow;
   @include card-hover-3d;
   @include flex-vertical;
+  & {
+    cursor: pointer;
+  }
 }
 
 .imageWrapper {
@@ -51,7 +55,8 @@
   text-align: center;
 
   @include respond-md {
-    font-size: $font-md;
+    font-size: 13px;
+    max-width: 80px;
   }
 }
 
@@ -68,7 +73,7 @@
 
 .statusIcon {
   position: absolute;
-  bottom: 5px;
+  bottom: 10px;
   left: 20px;
   color: $primary-color;
   font-size: 1.1rem;

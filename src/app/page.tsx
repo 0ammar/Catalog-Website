@@ -4,29 +4,37 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FiUser, FiLock } from 'react-icons/fi';
+import { motion } from 'framer-motion';
 
 import styles from '@/styles/pages/welcome.module.scss';
 import { Logo } from '@/assets/images';
+import { useAuth } from '@/Hooks';
 
 export default function WelcomePage() {
   const router = useRouter();
   const [showLogin, setShowLogin] = useState(false);
   const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const { handleLogin, loading, error } = useAuth();
+
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setCredentials((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleLogin = () => {
-    // TODO: Connect with login API
-    console.log('Login with:', credentials);
+  const submitLogin = () => {
+    handleLogin(credentials.username, credentials.password);
   };
 
   return (
-    <div className={styles.wrapper}>
-      <Image src={Logo} alt="logo" width={160} height={160} className={styles.logo} />
-
+    <motion.div
+      className={styles.wrapper}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
+      <Image src={Logo} alt="logo" width={160} height={160} className={styles.logo} priority />
       <h1 className={styles.title}>مرحباً بك في كتالوج المتسوّق</h1>
       <div className={styles.underline} />
 
@@ -37,13 +45,22 @@ export default function WelcomePage() {
           </button>
           <button
             className={styles.secondaryBtn}
-            onClick={() => router.push('/categories/1')}
+            onClick={() => {
+              localStorage.removeItem('token');
+              localStorage.setItem('isAdmin', 'false');
+              router.push('/categories');
+            }}
           >
             الدخول كزائر
           </button>
+
         </div>
       ) : (
-        <div className={styles.form}>
+        <motion.div
+          className={styles.form}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
           <div className={styles.inputWrapper}>
             <FiUser className={styles.icon} />
             <input
@@ -68,14 +85,21 @@ export default function WelcomePage() {
             />
           </div>
 
-          <button className={styles.primaryBtn} onClick={handleLogin}>
-            تسجيل الدخول
+          {error && <p className={styles.error}>{error}</p>}
+
+          <button className={styles.primaryBtn} onClick={submitLogin} disabled={loading}>
+            {loading ? (
+              <div className={styles.spinner}></div>
+            ) : (
+              'تسجيل الدخول'
+            )}
           </button>
+
           <button className={styles.secondaryBtn} onClick={() => setShowLogin(false)}>
             عودة للخلف
           </button>
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }

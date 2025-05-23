@@ -1,8 +1,8 @@
 'use client';
 
-import styles from './ImageViewer.module.scss';
-import Image from 'next/image';
 import { useEffect } from 'react';
+import Image from 'next/image';
+import styles from './ImageViewer.module.scss';
 
 type Props = {
   imageUrl: string;
@@ -18,22 +18,27 @@ const ImageViewer = ({ imageUrl, onClose }: Props) => {
   }, []);
 
   return (
-    <>
+    <div className={styles.viewerWrapper}>
       <div className={styles.overlay} onClick={onClose} />
+
       <div className={styles.modal}>
+        <button className={styles.closeBtn} onClick={onClose}>
+          ×
+        </button>
+
         <div className={styles.imageWrapper}>
           <Image
             src={imageUrl}
-            alt="Enlarged Image"
+            alt="عرض الصورة"
             fill
-            sizes="(max-width: 768px) 90vw, 600px"
+            sizes="(max-width: 768px) 90vw, 90vh"
             className={styles.image}
+            unoptimized
           />
         </div>
-        <button className={styles.closeBtn} onClick={onClose}>×</button>
       </div>
-    </>
+    </div>
   );
-}
+};
 
-export default ImageViewer
+export default ImageViewer;

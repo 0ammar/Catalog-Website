@@ -1,13 +1,15 @@
+@use 'sass:color';
 @use "@/styles/variables" as *;
 @use "@/styles/mixins" as *;
 
 .wrapper {
-  @include flex-vertical;
   min-height: 100vh;
   padding: $space-xl $space-md;
   background-color: $background-color;
   text-align: center;
   transition: all 0.3s ease-in-out;
+
+  @include flex-vertical;
 
   @include respond-md {
     padding: $space-lg $space-sm;
@@ -62,12 +64,13 @@
 }
 
 .actions {
-  @include flex-vertical;
   max-width: 320px;
   width: 100%;
   margin-top: $space-md;
   gap: $space-sm;
   transition: all 0.3s ease;
+
+  @include flex-vertical;
 }
 
 .primaryBtn,
@@ -96,7 +99,7 @@
   border: none;
 
   &:hover {
-    background-color: darken($primary-color, 8%);
+    background-color: color.adjust($primary-color, $lightness: -8%);
     transform: translateY(-1px);
   }
 }
@@ -113,12 +116,13 @@
 }
 
 .form {
-  @include flex-vertical;
   gap: $space-sm;
   max-width: 320px;
   width: 100%;
   margin-top: $space-md;
   animation: fadeIn 0.3s ease;
+
+  @include flex-vertical;
 
   @include respond-sm {
     gap: $space-sm;
@@ -134,6 +138,7 @@
   border-radius: $radius-md;
   background-color: $white;
   padding: $space-sm $space-md;
+  margin-bottom: 15px;
 
   input {
     flex: 1;
@@ -162,5 +167,20 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+.spinner {
+  width: 22px;
+  height: 22px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }

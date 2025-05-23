@@ -1,12 +1,6 @@
-import { CategoryPage } from "@/Components/Layout";
+import { CategoryPage } from '@/Components/Layout';
 
-type Props = {
-  params: Promise<{ path?: string[] }>;
-};
-
-const Categories = async ({ params }: Props) => {
+export default async function Categories({ params }: { params: Promise<{ path?: string[] }> }) {
   const { path = [] } = await params;
   return <CategoryPage path={path} />;
 }
-
-export default Categories

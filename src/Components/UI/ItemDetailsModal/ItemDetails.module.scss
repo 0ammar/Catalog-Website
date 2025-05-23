@@ -159,3 +159,23 @@
     font-size: 22px;
   }
 }
+.statusIconFixed {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 4px;
+  z-index: 10;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statusIconImage {
+  width: 30px;
+  height: 30px;
+  border-radius: 14px;
+  object-fit: contain;
+}

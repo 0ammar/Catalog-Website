@@ -2,23 +2,22 @@
 
 import styles from './ItemsGrid.module.scss';
 import { ItemCard } from '@/Components/UI';
+import { Item } from '@/types/apiTypes';
 
-import { ItemsGridProps } from '@/types/itemComponent';
+type Props = {
+  items: Item[];
+};
 
-const ItemsGrid = ({ items }: ItemsGridProps) => {
-  
+const ItemsGrid = ({ items }: Props) => {
   return (
     <section className={styles.itemsGrid}>
-      {items.map((item, i) => (
-        <ItemCard
-          key={i}
-          imageUrl={item.imageUrl}
-          name={item.name}
-          itemNumber={item.itemNumber}
-          status={item.status}
-        />
-      ))}
+      {items.map((item) => {
+  console.log("🎯 Rendering item:", item.itemNo, "—", item.status?.code || "no status");
+  return <ItemCard key={item.itemNo} item={item} />;
+})}
+
     </section>
   );
-}
-export default ItemsGrid
+};
+
+export default ItemsGrid;
