@@ -79,7 +79,7 @@
 
 .infoSection {
   text-align: center;
-  padding-inline: 5px;
+  padding: 12px;
 
   .title {
     font-size: $font-lg;
@@ -96,14 +96,21 @@
   .description {
     font-size: $font-md;
     color: $text-color;
-    line-height: 1.5;
-    margin-bottom: 8px;
+    line-height: 1.6;
+    margin: 0 auto 10px;
+    max-width: 90%;
+    text-align: justify;
 
     &.collapsed {
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-    }
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+
+  display: box;
+  box-orient: vertical;
+  line-clamp: 3; 
+}
 
     &.expanded {
       max-height: none;
@@ -121,6 +128,7 @@
   }
 }
 
+
 .adminSection {
   margin-top: 20px;
   display: flex;
@@ -130,25 +138,23 @@
 }
 
 .statusIconFixed {
-  position: absolute;
-  bottom: 16px;
-  left: 16px;
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 150; 
   border-radius: 50%;
-  z-index: 20;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  background-color: $white;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: popIn 0.3s ease;
   width: clamp(32px, 5vw, 42px);
   height: clamp(32px, 5vw, 42px);
-}
 
-.statusIconImage {
-  width: 60%;
-  height: 60%;
-  object-fit: contain;
-  border-radius: 50%;
+  @media (max-width: 600px) {
+    bottom: 16px;
+    left: 16px;
+  }
 }
 
 

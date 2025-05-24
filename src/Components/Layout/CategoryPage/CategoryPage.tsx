@@ -7,16 +7,16 @@ import { ItemsPage, Searchbar } from '@/Components/Layout';
 import { CategoryGrid, EmptyState, Pagination } from '@/Components/UI';
 import Loading from '@/Components/UI/Loading/Loading';
 
-import { useItemLogic, useCategory, useSearchList } from '@/Hooks';
+import { useItemLogic, useCategory, useSearchList, useAuth } from '@/Hooks';
 
 type Props = {
   path: string[];
 };
 
 const CategoryPage = ({ path }: Props) => {
+  const { isAdmin } = useAuth();
   const {
     data: categories,
-    level,
     ids,
     loading: categoryLoading,
     uploadImage,
@@ -56,7 +56,7 @@ const CategoryPage = ({ path }: Props) => {
     subTwoId: ids.subTwoId,
     subThreeId: ids.subThreeId,
     pageSize: 30,
-    page: searchPage, 
+    page: searchPage,
   });
 
   useEffect(() => {
@@ -71,6 +71,7 @@ const CategoryPage = ({ path }: Props) => {
   if (categoryLoading) return <Loading />;
 
   const showItemsPage = isSearching || shouldShowItems;
+  console.log('Category Name:', selectedCategoryName);
 
   return (
     <main className={styles.categoryPage}>
@@ -94,9 +95,9 @@ const CategoryPage = ({ path }: Props) => {
         </>
       ) : (
         <>
-          {level > 0 && (
+          {selectedCategoryName && (
             <h1 className={styles.pageTitle}>
-              {selectedCategoryName} ({categories.length})
+              {selectedCategoryName}
             </h1>
           )}
 
@@ -112,11 +113,13 @@ const CategoryPage = ({ path }: Props) => {
               uploadImage={uploadImage}
               deleteImage={deleteImage}
               refetch={refetch}
+              isAdmin={isAdmin}
             />
           )}
         </>
       )}
     </main>
+
   );
 };
 

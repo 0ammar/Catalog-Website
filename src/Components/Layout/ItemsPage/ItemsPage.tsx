@@ -12,16 +12,12 @@ type Props = {
   loading?: boolean;
 };
 
-const ItemsPage = ({ title, items, loading = false }: Props) => {
+const ItemsPage = ({ items, loading = false }: Props) => {
   const showEmpty = !loading && items.length === 0;
 
   return (
     <main className={styles.itemsPage}>
-      {title && (
-        <h1 className={styles.pageTitle}>
-          {title} ({items.length})
-        </h1>
-      )}
+
 
       {loading ? (
         <Loading />

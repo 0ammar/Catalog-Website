@@ -17,3 +17,14 @@
     font-size: $font-md;
   }
 }
+.pageTitle {
+  @include section-title;
+  @include flex-center;
+
+  margin: $space-lg auto;
+  padding: $space-sm $space-md;
+  border-bottom: 2px solid $primary-color;
+  width: fit-content;
+}
+
+

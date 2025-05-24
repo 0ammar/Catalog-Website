@@ -1,0 +1,65 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  @include flex-center;
+}
+
+.modal {
+  background-color: $white;
+  border-radius: $radius-lg;
+  padding: $space-lg;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  @include card-shadow;
+}
+
+.title {
+  font-size: $font-xl;
+  font-weight: $weight-bold;
+  color: $primary-color;
+  margin-bottom: $space-sm;
+}
+
+.message {
+  font-size: $font-md;
+  color: $text-color;
+  margin-bottom: $space-lg;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-evenly;
+  gap: $space-md;
+}
+
+.cancelBtn,
+.confirmBtn {
+  border: none;
+  border-radius: $radius-md;
+  padding: 10px $space-xl;
+  font-size: $font-md;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  @include respond-md {
+    padding: 10px $space-md;
+  }
+}
+
+.cancelBtn {
+  background-color: $primary-color;
+  color: $white;
+}
+
+.confirmBtn {
+  background-color: $primary-color;
+  color: $white;
+}

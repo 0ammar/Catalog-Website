@@ -5,3 +5,4 @@ export { default as ItemsGrid } from './ItemsGrid/ItemsGrid';
 
 export { default as EmptyState } from './EmptyState/EmptyState';
 export { default as Pagination } from './Pagination/Pagination';
+export { default as Modal } from './Modal/Modal';

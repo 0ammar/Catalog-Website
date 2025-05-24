@@ -24,53 +24,71 @@ type CategoryItem = Group | SubOne | SubTwo | SubThree;
 export default function useCategory(path: string[] = []) {
   const router = useRouter();
 
-  // State for each level of category data
   const [groups, setGroups] = useState<Group[]>([]);
   const [subOnes, setSubOnes] = useState<SubOne[]>([]);
   const [subTwos, setSubTwos] = useState<SubTwo[]>([]);
   const [subThrees, setSubThrees] = useState<SubThree[]>([]);
-
   const [loading, setLoading] = useState(true);
   const [hasSubThrees, setHasSubThrees] = useState(false);
 
   const level = path.length;
 
-  // Extract selected IDs based on the path
   const selectedIds = useMemo(() => {
     const [groupId, subOneId, subTwoId, subThreeId] = path;
     return { groupId, subOneId, subTwoId, subThreeId };
   }, [path]);
 
-  // Fetch category data based on current level
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
 
       switch (level) {
-        case 0:
-          setGroups(await getGroups());
+        case 0: {
+          const groupsData = await getGroups();
+          setGroups(groupsData);
           break;
-        case 1:
+        }
+        case 1: {
           if (selectedIds.groupId) {
-            setSubOnes(await getSubOnes(selectedIds.groupId));
+            const [groupsData, subOnesData] = await Promise.all([
+              getGroups(),
+              getSubOnes(selectedIds.groupId),
+            ]);
+            setGroups(groupsData);
+            setSubOnes(subOnesData);
           }
           break;
-        case 2:
+        }
+        case 2: {
           if (selectedIds.groupId && selectedIds.subOneId) {
-            setSubTwos(await getSubTwos(selectedIds.groupId, selectedIds.subOneId));
+            const [subOnesData, subTwosData] = await Promise.all([
+              getSubOnes(selectedIds.groupId),
+              getSubTwos(selectedIds.groupId, selectedIds.subOneId),
+            ]);
+            setSubOnes(subOnesData);
+            setSubTwos(subTwosData);
           }
           break;
-        case 3:
+        }
+        case 3: {
           if (selectedIds.groupId && selectedIds.subOneId && selectedIds.subTwoId) {
-            setSubThrees(await getSubThrees(selectedIds.groupId, selectedIds.subOneId, selectedIds.subTwoId));
+            const [subTwosData, subThreesData] = await Promise.all([
+              getSubTwos(selectedIds.groupId, selectedIds.subOneId),
+              getSubThrees(selectedIds.groupId, selectedIds.subOneId, selectedIds.subTwoId),
+            ]);
+            setSubTwos(subTwosData);
+            setSubThrees(subThreesData);
           }
           break;
-        default:
-          break;
+        }
       }
 
-      // Check if subThrees exist when we're on level 2
-      if (level === 2 && selectedIds.groupId && selectedIds.subOneId && selectedIds.subTwoId) {
+      if (
+        level === 2 &&
+        selectedIds.groupId &&
+        selectedIds.subOneId &&
+        selectedIds.subTwoId
+      ) {
         const subThrees = await getSubThrees(
           selectedIds.groupId,
           selectedIds.subOneId,
@@ -78,7 +96,7 @@ export default function useCategory(path: string[] = []) {
         );
         setHasSubThrees(subThrees.length > 0);
       }
-    } catch (err: unknown) {
+    } catch (err) {
       console.error('❌ Error fetching category data:', err);
     } finally {
       setLoading(false);
@@ -89,7 +107,6 @@ export default function useCategory(path: string[] = []) {
     fetchData();
   }, [fetchData]);
 
-  // Determine which data to show based on current level
   const currentData: CategoryItem[] = useMemo(() => {
     switch (level) {
       case 0: return groups;
@@ -100,33 +117,34 @@ export default function useCategory(path: string[] = []) {
     }
   }, [level, groups, subOnes, subTwos, subThrees]);
 
-  // Dynamically determine category title
   const selectedCategoryName = useMemo(() => {
-    switch (level) {
-      case 1: return groups.find((g) => g.id === selectedIds.groupId)?.name;
-      case 2: return subOnes.find((s) => s.id === selectedIds.subOneId)?.name;
-      case 3: return subTwos.find((s) => s.id === selectedIds.subTwoId)?.name;
-      default: return undefined;
+    if (level === 1) {
+      return groups.find((g) => g.id === selectedIds.groupId)?.name ?? '';
     }
-  }, [level, selectedIds, groups, subOnes, subTwos]);
+    if (level === 2) {
+      return subOnes.find((s) => s.id === selectedIds.subOneId)?.name ?? '';
+    }
+    if (level === 3) {
+      return subTwos.find((s) => s.id === selectedIds.subTwoId)?.name ?? '';
+    }
+    if (level === 4) {
+      return subThrees.find((s) => s.id === selectedIds.subThreeId)?.name ?? '';
+    }
+    return '';
+  }, [level, selectedIds, groups, subOnes, subTwos, subThrees]);
 
-  // Decide whether we should show items under this path
   const shouldShowItems = useMemo(() => (
     (level === 2 && !hasSubThrees && selectedIds.subTwoId) ||
     (level === 3 && selectedIds.subThreeId) ||
     level === 4
   ), [level, hasSubThrees, selectedIds]);
 
-  // Handle click on a category card (navigation logic)
   const handleCategoryClick = async (itemId: string) => {
     const newPath = [...path, itemId];
-
-    // If we are on SubTwo, check if SubThrees exist
     if (path.length === 2) {
       try {
         const [groupId, subOneId] = path;
         const subThrees = await getSubThrees(groupId, subOneId, itemId);
-
         if (subThrees.length > 0) {
           router.push(`/categories/${groupId}/${subOneId}/${itemId}`);
         } else {
@@ -140,26 +158,22 @@ export default function useCategory(path: string[] = []) {
     }
   };
 
-  // Upload image handler
-  const uploadImage = async (file: File, id: string) => {
+  const uploadImage = async (file: File, id: string): Promise<void> => {
     switch (level) {
-      case 0: return await uploadGroupImage(id, file);
-      case 1: return await uploadSubOneImage(id, file);
-      case 2: return await uploadSubTwoImage(id, file);
-      case 3: return await uploadSubThreeImage(id, file);
-      default: return false;
+      case 0: await uploadGroupImage(id, file); break;
+      case 1: await uploadSubOneImage(id, file); break;
+      case 2: await uploadSubTwoImage(id, file); break;
+      case 3: await uploadSubThreeImage(id, file); break;
     }
   };
 
-  // Delete image handler
-  const deleteImage = async (imageUrl: string, id: string) => {
+  const deleteImage = async (imageUrl: string, id: string): Promise<void> => {
     const fileName = decodeURIComponent(imageUrl.split('/').pop() ?? '');
     switch (level) {
-      case 0: return await deleteGroupImage(id, fileName);
-      case 1: return await deleteSubOneImage(id, fileName);
-      case 2: return await deleteSubTwoImage(id, fileName);
-      case 3: return await deleteSubThreeImage(id, fileName);
-      default: return false;
+      case 0: await deleteGroupImage(id, fileName); break;
+      case 1: await deleteSubOneImage(id, fileName); break;
+      case 2: await deleteSubTwoImage(id, fileName); break;
+      case 3: await deleteSubThreeImage(id, fileName); break;
     }
   };
 
