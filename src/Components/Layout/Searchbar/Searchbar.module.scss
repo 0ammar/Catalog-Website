@@ -8,7 +8,7 @@
   padding: 2px $space-md;
   width: 100%;
   max-width: 450px;
-  margin: 0px auto 20px;
+  margin: 10px auto 20px;
   position: relative;
 
   @include flex-center;
@@ -19,6 +19,7 @@
     align-items: stretch;
     padding: $space-sm;
     gap: $space-sm;
+    margin: 2px auto;
   }
 }
 

@@ -9,7 +9,7 @@ const Footer = () => {
     return (
         <footer className={styles.footer}>
             <div className={styles.left}>
-                <Image src={AppIcon} alt='app icon' width={25} height={25} />
+                <Image src={AppIcon} alt='app icon' width={18} height={18} />
                 <span>Almutasaweq Catalog v1.0</span>
             </div>
             <div className={styles.right}>

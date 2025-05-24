@@ -22,7 +22,7 @@ const StatusButtons = ({ status, statuses, loading, onChange }: Props) => {
             key={s.id}
             title={s.name}
             disabled={loading}
-            onClick={() => onChange(s.code)}
+            onClick={() => onChange(s.id)}
             className={`${styles.iconBtn} ${isActive ? styles.active : ''}`}
           >
             <Image

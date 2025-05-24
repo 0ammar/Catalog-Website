@@ -71,7 +71,6 @@
   overflow-x: auto; 
 }
 
-
 .carouselWrapper {
   margin: 30px 0 10px;
   display: flex;
@@ -130,6 +129,29 @@
   align-items: center;
 }
 
+.statusIconFixed {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  border-radius: 50%;
+  z-index: 20;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: popIn 0.3s ease;
+  width: clamp(32px, 5vw, 42px);
+  height: clamp(32px, 5vw, 42px);
+}
+
+.statusIconImage {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+
 @keyframes fadeIn {
   to {
     opacity: 1;
@@ -142,40 +164,30 @@
   }
 }
 
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @media (max-width: 600px) {
   .modal {
     width: 92vw;
   }
+
   .statusMenu {
-  top: 12px;
-  padding:  0;
-  max-width: 62vw;
-}
-
-
-  .closeBtn {
-    top: 8px;
-    right: 10px;
-    font-size: 22px;
+    top: 12px;
+    padding: 0;
+    max-width: 62vw;
   }
-}
-.statusIconFixed {
-  position: absolute;
-  bottom: 16px;
-  left: 16px;
-  background-color: #fff;
-  border-radius: 16px;
-  padding: 4px;
-  z-index: 10;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.statusIconImage {
-  width: 30px;
-  height: 30px;
-  border-radius: 14px;
-  object-fit: contain;
+  .statusIconFixed {
+    bottom: 16px;
+    left: 16px;
+  }
 }

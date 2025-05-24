@@ -10,7 +10,6 @@ type Props = {
 };
 
 const ImageViewer = ({ imageUrl, onClose }: Props) => {
-  // Prevent page scroll while viewer is open
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {

@@ -23,9 +23,9 @@ interface Props {
 const ItemDetails = ({ itemNo, onClose, onStatusUpdate }: Props) => {
   const {
     item,
-    loading,
     itemStatus,
     statuses,
+    loading,
     changeStatus,
     previewImage,
     fullImageUrl,
@@ -48,6 +48,7 @@ const ItemDetails = ({ itemNo, onClose, onStatusUpdate }: Props) => {
       </>
     );
   }
+  console.log("itemStatus:", itemStatus);
 
   return (
     <>
@@ -70,7 +71,7 @@ const ItemDetails = ({ itemNo, onClose, onStatusUpdate }: Props) => {
         {isAdmin && showStatusMenu && item && (
           <div className={styles.statusMenu}>
             <StatusButtons
-              status={itemStatus?.code}
+              status={itemStatus?.id}
               statuses={statuses}
               loading={false}
               onChange={(code) => changeStatus(code, onStatusUpdate)}
@@ -113,9 +114,9 @@ const ItemDetails = ({ itemNo, onClose, onStatusUpdate }: Props) => {
         )}
 
         <AnimatePresence>
-          {itemStatus && (
+          {itemStatus?.iconUrl && (
             <motion.div
-              key={itemStatus.code}
+              key={itemStatus.id}
               className={styles.statusIconFixed}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -125,20 +126,19 @@ const ItemDetails = ({ itemNo, onClose, onStatusUpdate }: Props) => {
               <Image
                 src={itemStatus.iconUrl}
                 alt={itemStatus.name}
-                width={60}
-                height={60}
+                width={30}
+                height={30}
                 className={styles.statusIconImage}
               />
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
 
+      </div>
       {previewImage && fullImageUrl && (
         <ImageViewer imageUrl={fullImageUrl} onClose={closeImage} />
       )}
     </>
   );
 };
-
 export default ItemDetails;
