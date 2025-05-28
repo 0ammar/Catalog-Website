@@ -71,7 +71,6 @@ const CategoryPage = ({ path }: Props) => {
   if (categoryLoading) return <Loading />;
 
   const showItemsPage = isSearching || shouldShowItems;
-  console.log('Category Name:', selectedCategoryName);
 
   return (
     <main className={styles.categoryPage}>

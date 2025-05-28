@@ -54,7 +54,6 @@ export const getItemsByStatus = async (
 // 🔹 4. Get single item details
 export const getItemByItemNo = async (itemNo: string): Promise<GetItemDto> => {
   const response = await api.get<GetItemDto>(`/api/items/${itemNo}`);
-  console.log("🔍 item data from backend:", response.data);
 
   return response.data;
 };
@@ -67,11 +66,7 @@ export const getItemStatuses = async (): Promise<ItemStatuses[]> => {
 
 // 🔹 6. Update item status
 export const updateItemStatus = async (itemNo: string, statusId: string) => {
-  console.log("🚀 Sending PUT to update status:", { itemNo, statusId });
-
   await api.put(`/api/admin/items/${itemNo}/status?statusId=${statusId}`);
-
-  console.log("✅ Status update request sent successfully");
 };
 
 // 🔹 7. Get item images only
@@ -79,11 +74,6 @@ export const getItemImagesOnly = async (itemNo: string): Promise<string[]> => {
   const response = await api.get<string[]>(`/api/admin/items/${itemNo}/images`);
   return response.data;
 };
-
-// ✅ 8. Get full-size image
-// ✅ Final version - build full image URL directly
-
-
 
 // 🔹 9. Upload item images
 export const uploadItemImages = async (itemNo: string, files: File[]) => {
@@ -102,10 +92,7 @@ export const deleteItemImages = async (
   itemNo: string,
   imageNames: string[]
 ) => {
-  await api.delete(`/api/admin/items/${itemNo}/images`, {
-    data: imageNames,
-    headers: { "Content-Type": "application/json" },
-  });
+  await api.post(`/api/admin/items/${itemNo}/images/delete`, imageNames, {});
 };
 
 // 🔹 11. Get specific item status
@@ -114,3 +101,10 @@ export const getItemStatus = async (itemNo: string): Promise<ItemStatuses> => {
   return response.data;
 };
 
+// 🔹 11. Update item description
+export const updateItemDescription = async (
+  itemNo: string,
+  description: string
+): Promise<void> => {
+  await api.put(`/api/admin/items/${itemNo}/description`, { description });
+};

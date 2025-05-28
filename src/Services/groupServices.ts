@@ -55,7 +55,6 @@ const uploadImage = async (level: string, id: string, file: File): Promise<boole
     formData.append('file', file, file.name);
 
     await api.post(`/api/admin/${level}/${id}`, formData); 
-    console.log(`✅ Uploaded image for ${level} (${id})`);
     return true;
   } catch (err) {
     console.error(`❌ Failed to upload image for ${level} (${id})`, err);
@@ -75,7 +74,6 @@ const deleteImage = async (level: string, id: string, imageFileName: string): Pr
     await api.delete(`/api/admin/${level}/${id}`, {
       params: { imageUrl: imageFileName },
     });
-    console.log(`🗑️ Deleted image for ${level} (${id})`);
     return true;
   } catch (err) {
     console.error(`❌ Failed to delete image for ${level} (${id})`, err);

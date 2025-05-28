@@ -10,6 +10,7 @@ const Loading = () => {
   return (
     <div className={styles.loadingWrapper}>
       <Lottie animationData={SplashScreen} loop className={styles.loader} />
+      <p className={styles.p}>...جاري التحميل</p>
     </div>
   );
 };

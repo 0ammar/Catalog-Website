@@ -1,75 +1,73 @@
-@use '@/styles/variables' as *;
-@use '@/styles/mixins' as *;
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
 
+// === Wrapper ===
 .wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 24px;
+  margin-top: $space-sm;
 }
 
+// === Action Buttons Row ===
 .actions {
   display: flex;
-  justify-content: space-between;
-  gap: 16px;
+  justify-content: center;
+  gap: $space-md;
   flex-wrap: wrap;
+}
 
-  button,
-  label {
-    padding: 10px 22px;
-    border-radius: 30px;
-    font-size: 14px;
-    cursor: pointer;
-    font-weight: 700;
-    transition: 0.3s ease all;
-    background-color: #1a1a1a;
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+// === Icon Button ===
+.iconBtn {
+  background-color: #333;
+  color: $white;
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 
-    @include respond-md {
-      font-size: 11px;
-    }
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 
-    &:hover {
-      background-color: black;
-      transform: scale(1.03);
-    }
+  &:hover {
+    background-color: darken(#333, 10%);
+    transform: scale(1.05);
+  }
 
-    &:disabled {
-      opacity: 0.5;
-      pointer-events: none;
-    }
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
 }
 
-.uploadBtn input {
-  display: none;
-}
-
-.deleteBtn{
-  font-weight: 700;
-}
-
+// === Modal Overlay ===
 .modalOverlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(2px);
   z-index: 1000;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
 }
 
+// === Modal Content ===
 .modalContent {
-  background: white;
-  border-radius: 16px;
+  background-color: $white;
+  border-radius: $radius-lg;
+  padding: $space-lg;
   width: 95%;
-  max-width: 600px;
-  padding: 20px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   animation: fadeUp 0.3s ease;
@@ -77,96 +75,134 @@
 
 @keyframes fadeUp {
   from {
-    transform: scale(0.9);
     opacity: 0;
+    transform: translateY(20px);
   }
   to {
-    transform: scale(1);
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
+// === Modal Header ===
 .modalHeader {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: $space-md;
+  position: relative;
+  font-weight: bold;
+  font-size: $font-lg;
 
-  p {
-    font-weight: bold;
-    font-size: 15px;
-    color: #222;
-  }
 
-  .closeBtn {
-    background: transparent;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-    color: #444;
-
-    &:hover {
-      color: #000;
-    }
+  @include respond-md {
+    font-size: $font-md;
+    font-weight: $weight-bold;
   }
 }
 
+.closeBtn {
+  background: transparent;
+  border: none;
+  font-size: $font-lg;
+  color: $text-color;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  &:hover {
+    color: $primary-color;
+  }
+}
+
+// === Grid of Images ===
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 12px;
-  max-height: 300px;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: $space-sm;
+  max-height: 250px;
   overflow-y: auto;
-  margin-bottom: 20px;
+  margin-bottom: $space-md;
 
   &::-webkit-scrollbar {
     width: 6px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #aaa;
+    background: lighten(#eee, 10%);
     border-radius: 5px;
   }
 }
 
 .imageCard {
-  position: relative;
   border: 2px solid transparent;
-  border-radius: 10px;
+  border-radius: $radius-md;
   overflow: hidden;
-  transition: 0.2s ease;
   cursor: pointer;
+  transition: border-color 0.2s ease, opacity 0.2s ease;
 
   &.selected {
-    opacity: 0.4;
     border-color: $primary-color;
+    opacity: 0.5;
   }
 
   img {
     width: 100%;
     height: auto;
-    border-radius: 10px;
+    display: block;
     object-fit: cover;
+    border-radius: $radius-md;
   }
 }
 
+// === Modal Footer Actions ===
 .modalActions {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
+  gap: 50px;
 
   button {
     flex: 1;
     padding: 10px 0;
+    font-size: $font-md;
+    font-weight: $weight-bold;
+    border-radius: $radius-md;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s ease;
+
+    &:first-of-type {
+      background-color: $primary-color;
+      color: $white;
+    }
+
+    &:last-of-type {
+      background-color: $primary-color;
+      color: $white;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      pointer-events: none;
+    }
   }
 }
 
-@media (max-width: 600px) {
-  .modalContent {
-    padding: 16px;
-  }
-
-  .grid {
-    gap: 8px;
+// === Textarea ===
+.textarea {
+  padding: $space-sm;
+  font-size: $font-md;
+  border: 1px solid #eee;
+  border-radius: $radius-md;
+  resize: vertical;
+  min-height: 100px;
+  margin-bottom: $space-md;
+  width: 100%;
+  font-family: inherit;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }

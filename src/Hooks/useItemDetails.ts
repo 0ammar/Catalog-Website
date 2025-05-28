@@ -10,6 +10,7 @@ import {
   uploadItemImages,
   deleteItemImages,
   getItemStatus,
+  updateItemDescription,
 } from "@/Services/itemServices";
 import { GetItemDto, ItemStatuses } from "@/types/apiTypes";
 
@@ -33,6 +34,21 @@ export default function useItemDetails(itemNo: string) {
   const imageCache = useRef<Record<string, string>>({});
 
   const [expandedDescription, setExpandedDescription] = useState(false);
+
+  const refetch = async () => {
+  setLoading(true);
+  try {
+    const data = await getItemByItemNo(itemNo);
+    const images = await getItemImagesOnly(itemNo);
+    const status = await getItemStatus(itemNo);
+    setItem({ ...data, images, status });
+  } catch (err: unknown) {
+    setError(err instanceof Error ? err.message : 'Failed to refetch item');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const fetchItemDetails = useCallback(async () => {
     setLoading(true);
@@ -78,30 +94,31 @@ export default function useItemDetails(itemNo: string) {
     }
   };
 
-const openImage = async (imageName: string) => {
-  setPreviewImage(imageName);
+  const openImage = async (imageName: string) => {
+    setPreviewImage(imageName);
 
-  if (imageCache.current[imageName]) {
-    setFullImageUrl(imageCache.current[imageName]);
-    return;
-  }
-
-  try {
-    let url = imageName;
-
-    if (!imageName.startsWith('http') && !imageName.includes('/UploadedImages/')) {
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-      url = `${baseUrl}/UploadedImages/${imageName}`;
+    if (imageCache.current[imageName]) {
+      setFullImageUrl(imageCache.current[imageName]);
+      return;
     }
 
-    imageCache.current[imageName] = url;
-    setFullImageUrl(url);
-  } catch (err) {
-    console.error("❌ Failed to open image:", err);
-  }
-};
+    try {
+      let url = imageName;
 
+      if (
+        !imageName.startsWith("http") &&
+        !imageName.includes("/UploadedImages/")
+      ) {
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+        url = `${baseUrl}/UploadedImages/${imageName}`;
+      }
 
+      imageCache.current[imageName] = url;
+      setFullImageUrl(url);
+    } catch (err) {
+      console.error("❌ Failed to open image:", err);
+    }
+  };
 
   const closeImage = () => {
     setPreviewImage(null);
@@ -119,6 +136,18 @@ const openImage = async (imageName: string) => {
     await deleteItemImages(itemNo, names);
     await fetchItemDetails();
     router.refresh();
+  };
+
+  const updateDescription = async (newDesc: string): Promise<void> => {
+    if (!newDesc.trim()) return;
+
+    try {
+      await updateItemDescription(itemNo, newDesc);
+      await fetchItemDetails();
+      router.refresh();
+    } catch (error) {
+      console.error("Update description error:", error);
+    }
   };
 
   useEffect(() => {
@@ -144,5 +173,7 @@ const openImage = async (imageName: string) => {
     toggleDescription: () => setExpandedDescription((prev) => !prev),
     uploadImages,
     deleteImages,
+    updateDescription,
+    refetch,
   };
 }

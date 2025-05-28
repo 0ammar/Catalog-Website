@@ -1,4 +1,4 @@
-@use 'sass:color';
+@use "sass:color";
 @use "@/styles/variables" as *;
 @use "@/styles/mixins" as *;
 
@@ -24,27 +24,24 @@
   transition: transform 0.3s ease;
 
   @include respond-md {
+    width: 80%;
     margin-bottom: $space-lg;
-  }
-
-  &:hover {
-    transform: scale(1.05);
   }
 }
 
 .title {
   font-size: $font-xxl;
-  font-weight: $weight-bold;
+  font-weight: bolder;
   color: $primary-color;
   margin-bottom: $space-md;
   transition: color 0.2s ease;
 
   @include respond-md {
     font-size: $font-xl;
+    font-weight: bolder;
   }
 
   @include respond-sm {
-    font-size: $font-md;
     margin-bottom: $space-sm;
   }
 }
@@ -58,8 +55,8 @@
   transition: width 0.3s ease;
 
   @include respond-md {
-    margin: 0 auto $space-sm auto;
-    width: 250px;
+    margin: 0 auto $space-md auto;
+    width: 78%;
   }
 }
 
@@ -69,16 +66,19 @@
   margin-top: $space-md;
   gap: $space-sm;
   transition: all 0.3s ease;
+  margin-bottom: 50px;
 
   @include flex-vertical;
 }
-
+.primaryBtn{
+  width: 100%;
+}
 .primaryBtn,
 .secondaryBtn {
-  padding: 15px 30px;
+  padding: 20px 30px;
   border-radius: $radius-xl;
   font-size: 24px;
-  font-weight: 700;
+  font-weight: bolder;
   transition: all 0.2s ease;
   cursor: pointer;
   border: none;

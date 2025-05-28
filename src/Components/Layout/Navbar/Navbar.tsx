@@ -3,9 +3,9 @@
 import styles from './Navbar.module.scss';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Logo, StarImg, NewImg } from '@/assets/images';
-import { HiOutlineLogout, HiOutlineUser } from 'react-icons/hi';
 import { useState } from 'react';
+import { HiOutlineLogout } from 'react-icons/hi';
+import { Logo, NewImg, focusedImg, favouriteImg } from '@/assets/images';
 import { Modal } from '@/Components/UI';
 
 const Navbar = () => {
@@ -18,50 +18,30 @@ const Navbar = () => {
     router.push('/');
   };
 
-  const leftIcons = [
-    {
-      title: 'Logout',
-      icon: <HiOutlineLogout className={styles.icon} />,
-      onClick: () => setShowLogoutModal(true),
-    },
-     {
-      title: 'Profile',
-      icon: <HiOutlineUser className={styles.icon} />,
-      onClick: () => console.log('Profile!'),
-    },
-  ];
-
-  const rightIcons = [
-    {
-      title: 'Focused Items',
-      src: StarImg,
-      alt: 'Focused Items',
-      href: '/focused-items',
-      className: styles.StarImg,
-    },
-    {
-      title: 'New Items',
-      src: NewImg,
-      alt: 'New Items',
-      href: '/new-items',
-      className: styles.newImg,
-    },
-  ];
-
   return (
     <>
       <header className={styles.navbar}>
         <div className={styles.leftIcons}>
-          {leftIcons.map((item, i) => (
-            <button
-              key={i}
-              className={styles.iconBtn}
-              title={item.title}
-              onClick={item.onClick}
-            >
-              {item.icon}
-            </button>
-          ))}
+          <button
+            className={styles.iconBtn}
+            title="Logout"
+            onClick={() => setShowLogoutModal(true)}
+          >
+            <HiOutlineLogout className={styles.icon} />
+          </button>
+
+          <button
+            className={styles.iconBtn}
+            title="Favourite"
+            onClick={() => router.push('/favourite-items')}
+          >
+            <Image
+              src={favouriteImg}
+              alt="Favourite"
+              className={styles.iconImage}
+              priority
+            />
+          </button>
         </div>
 
         <div className={styles.logoContainer}>
@@ -75,21 +55,31 @@ const Navbar = () => {
         </div>
 
         <div className={styles.rightIcons}>
-          {rightIcons.map((item, i) => (
-            <button
-              key={i}
-              className={styles.iconBtn}
-              title={item.title}
-              onClick={() => router.push(item.href)}
-            >
-              <Image
-                src={item.src}
-                alt={item.alt}
-                className={item.className}
-                priority
-              />
-            </button>
-          ))}
+          <button
+            className={styles.iconBtn}
+            title="Focused Items"
+            onClick={() => router.push('/focused-items')}
+          >
+            <Image
+              src={focusedImg}
+              alt="Focused Items"
+              className={styles.StarImg}
+              priority
+            />
+          </button>
+
+          <button
+            className={styles.iconBtn}
+            title="New Items"
+            onClick={() => router.push('/new-items')}
+          >
+            <Image
+              src={NewImg}
+              alt="New Items"
+              className={styles.newImg}
+              priority
+            />
+          </button>
         </div>
 
         <div className={styles.sideLineLeft} />

@@ -1,5 +1,5 @@
-@use '@/styles/variables' as *;
-@use '@/styles/mixins' as *;
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
 
 .carousel {
   position: relative;
@@ -21,6 +21,7 @@
   -webkit-overflow-scrolling: touch;
   overflow-x: auto;
   scroll-behavior: smooth;
+  border-radius: 10px;
 
   &::-webkit-scrollbar {
     display: none;
@@ -70,30 +71,6 @@
 
 .navBtn:last-of-type {
   right: 10px;
-}
-
-.dots {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 5px;
-}
-
-.dot {
-  width: 9px;
-  height: 9px;
-  background-color: $muted-text-color;
-  border-radius: 50%;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  cursor: pointer;
-
-  &:hover {
-    transform: scale(1.2);
-  }
-}
-
-.active {
-  background-color: $primary-color;
 }
 
 @media (max-width: 768px) {

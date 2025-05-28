@@ -87,17 +87,6 @@ const ImageCarousel = ({ images = [], onImageClick }: Props) => {
       <button className={styles.navBtn} onClick={goNext} aria-label="صورة تالية">
         <IoIosArrowForward />
       </button>
-
-      <div className={styles.dots}>
-        {displayedImages.map((_, i) => (
-          <div
-            key={i}
-            className={`${styles.dot} ${i === index ? styles.active : ''}`}
-            onClick={() => setIndex(i)}
-            aria-label={`انتقال للصورة رقم ${i + 1}`}
-          />
-        ))}
-      </div>
     </div>
   );
 };

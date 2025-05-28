@@ -2,29 +2,22 @@
 @use "@/styles/mixins" as *;
 
 .categoryPage {
-  padding:  0 $space-md $space-sm;
+  padding: 0 0 $space-sm;
 
   @include respond-sm {
-    padding: $space-md $space-sm;
-  }
-}
-
-.pageTitle {
-  @include section-title;
-  margin-bottom: $space-lg;
-
-  @include respond-sm {
-    font-size: $font-md;
+    padding: 0;
   }
 }
 .pageTitle {
   @include section-title;
   @include flex-center;
-
-  margin: $space-lg auto;
+  margin: $space-md auto;
   padding: $space-sm $space-md;
   border-bottom: 2px solid $primary-color;
   width: fit-content;
+
+  @include respond-md {
+    margin: $space-sm auto;
+    font-size: $font-md;
+  }
 }
-
-
