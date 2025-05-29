@@ -4,6 +4,7 @@ import { ItemsPage, Searchbar } from '@/Components/Layout';
 import Pagination from '@/Components/UI/Pagination/Pagination';
 import EmptyState from '@/Components/UI/EmptyState/EmptyState';
 import useStatusItemsWithSearch from '@/Hooks/useStatusItemsWithSearch';
+import '@/styles/globals.scss';
 
 const NewItemsPage = () => {
   const {
@@ -24,7 +25,9 @@ const NewItemsPage = () => {
           setPage(1);
         }}
       />
-
+      <h1 className="title">
+        الأصناف الجديدة
+      </h1>
       {!loading && items.length === 0 ? (
         <EmptyState
           title="لا توجد عناصر"

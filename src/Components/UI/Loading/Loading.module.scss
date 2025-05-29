@@ -2,12 +2,15 @@
 @use '@/styles/mixins' as *;
 
 .loadingWrapper {
-  @include flex-vertical;
   min-height: 70vh;
+
+  @include flex-vertical;
 }
-.p{
+
+.p {
   margin-top: -10px;
 }
+
 .loader {
   width: 200px;
   height: 200px;

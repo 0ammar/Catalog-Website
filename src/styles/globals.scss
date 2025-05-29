@@ -60,3 +60,16 @@ img {
   background-color: rgba(0, 0, 0, 0.15);
   border-radius: $radius-full;
 }
+.title {
+  @include section-title;
+  @include flex-center;
+  margin: $space-md auto;
+  padding: $space-sm $space-md;
+  border-bottom: 2px solid $primary-color;
+  width: fit-content;
+
+  @include respond-md {
+    margin: $space-sm auto;
+    font-size: $font-md;
+  }
+}

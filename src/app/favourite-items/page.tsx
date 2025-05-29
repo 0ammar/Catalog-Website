@@ -5,6 +5,7 @@ import { ItemsPage, Searchbar } from '@/Components/Layout';
 import { EmptyState, Pagination } from '@/Components/UI';
 import Loading from '@/Components/UI/Loading/Loading';
 import { Trash2 } from 'lucide-react';
+import '@/styles/globals.scss';
 
 
 const FavouriteItemsPage = () => {
@@ -35,7 +36,10 @@ const FavouriteItemsPage = () => {
         }}
       />
       {total > 0 && (
-        <div style={{ display: 'flex', justifyContent: 'center', margin: '12px 0' }}>
+        <div style={{ display: 'flex', flexDirection: "column", justifyContent: 'center', margin: '12px 0' }}>
+          <h1 className="title">
+            قائمة المفضلة
+          </h1>
           <button
             onClick={clearFavourites}
             style={{

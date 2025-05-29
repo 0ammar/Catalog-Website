@@ -64,6 +64,7 @@
   font-size: $font-sm;
   color: $primary-color;
   margin-top: 4px;
+  font-weight: $weight-bold;
 
   @include respond-md {
     font-size: 10px;

@@ -136,9 +136,12 @@ const ItemDetails = ({ itemNo, onClose, onStatusUpdate }: Props) => {
               <h2 className={styles.title}>{item.name}</h2>
               <p className={styles.number}>{item.itemNo}</p>
               <p className={styles.imageCount}>عدد الصور: {item.images?.length ?? 0}</p>
+              <div className={styles.divider} />
               <p className={`${styles.description} ${expandedDescription ? styles.expanded : styles.collapsed}`}>
                 {item.description?.trim() || 'لا يوجد وصف متاح لهذا المنتج'}
               </p>
+
+
               {item.description?.length > 100 && (
                 <button className={styles.toggleBtn} onClick={toggleDescription}>
                   {expandedDescription ? 'عرض أقل' : '...عرض المزيد'}
