@@ -126,7 +126,6 @@ const ImageControls = ({
         </button>
 
       </div>
-
       <AnimatePresence>
         {showDeleteModal && (
           <motion.div
@@ -149,6 +148,7 @@ const ImageControls = ({
                   <X size={18} />
                 </button>
               </div>
+
               <div className={styles.grid}>
                 {images.map((img, i) => (
                   <div
@@ -160,18 +160,18 @@ const ImageControls = ({
                   </div>
                 ))}
               </div>
+
               <div className={styles.modalActions}>
-                <button onClick={addDescription} disabled={updatingDesc} className="primary">
-                  {updatingDesc ? '...جاري الحفظ' : 'حفظ'}
+                <button onClick={confirmDelete} disabled={deleting}>
+                  {deleting ? '...جاري الحذف' : 'حذف الصور المحددة'}
                 </button>
-                <button onClick={() => setShowDescModal(false)} className="secondary">
-                  إغلاق
-                </button>
+                <button onClick={() => setShowDeleteModal(false)}>إغلاق</button>
               </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+
 
       <AnimatePresence>
         {showDescModal && (
@@ -206,7 +206,6 @@ const ImageControls = ({
                   {updatingDesc ? '...جاري الحفظ' : 'حفظ'}
                 </button>
                 <button onClick={() => setShowDescModal(false)}>إغلاق</button>
-
               </div>
             </motion.div>
           </motion.div>
