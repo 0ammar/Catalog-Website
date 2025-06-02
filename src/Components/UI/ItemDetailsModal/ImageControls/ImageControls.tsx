@@ -77,10 +77,7 @@ const ImageControls = ({
   };
 
   const addDescription = async () => {
-    if (!description.trim()) {
-      toast.warn('❗ لا يمكن حفظ وصف فارغ');
-      return;
-    }
+
     setUpdatingDesc(true);
     try {
       onDescriptionSave?.(description);
@@ -164,10 +161,12 @@ const ImageControls = ({
                 ))}
               </div>
               <div className={styles.modalActions}>
-                <button onClick={confirmDelete} disabled={deleting || selectedImages.length === 0}>
-                  {deleting ? 'جاري الحذف...' : `حذف الصور`}
+                <button onClick={addDescription} disabled={updatingDesc} className="primary">
+                  {updatingDesc ? '...جاري الحفظ' : 'حفظ'}
                 </button>
-                <button onClick={() => setShowDeleteModal(false)}>تراجع</button>
+                <button onClick={() => setShowDescModal(false)} className="secondary">
+                  إغلاق
+                </button>
               </div>
             </motion.div>
           </motion.div>

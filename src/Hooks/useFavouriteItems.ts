@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
-import { getItemByItemNo } from "@/Services/itemServices";
-import { Item, GetItemDto } from "@/types/apiTypes";
+import { getItemByItemNo, getItemStatus } from "@/Services/itemServices";
+import { Item, GetItemDto, ItemStatuses } from "@/types/apiTypes";
 
 const ITEMS_PER_PAGE = 30;
 
@@ -15,7 +15,7 @@ const getStoredFavouriteNos = (): string[] => {
   }
 };
 
-const mapDtoToItem = (dto: GetItemDto): Item => {
+const mapDtoToItem = (dto: GetItemDto, status?: ItemStatuses): Item => {
   const base = process.env.NEXT_PUBLIC_API_URL || "";
   const placeholder = `${base}/UploadedImages/no-image.png`;
 
@@ -31,11 +31,13 @@ const mapDtoToItem = (dto: GetItemDto): Item => {
     name: dto.name,
     firstImage: fullImage,
     description: dto.description,
-    status: dto.status,
     groupId: `GROUP_FOR_${dto.itemNo}`,
     subOneId: `SUBONE_FOR_${dto.itemNo}`,
+    status: status,
   };
 };
+
+
 
 const useFavouriteItems = () => {
   const [originalItems, setOriginalItems] = useState<Item[]>([]);
@@ -49,32 +51,39 @@ const useFavouriteItems = () => {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const fetchItems = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    setPage(1);
+  setLoading(true);
+  setError(null);
+  setPage(1);
 
-    const itemNos = getStoredFavouriteNos();
-    if (!itemNos.length) {
-      setOriginalItems([]);
-      setItems([]);
-      setLoading(false);
-      return;
-    }
+  const itemNos = getStoredFavouriteNos();
+  if (!itemNos.length) {
+    setOriginalItems([]);
+    setItems([]);
+    setLoading(false);
+    return;
+  }
 
-    try {
-      const results = await Promise.all(itemNos.map(getItemByItemNo));
-      const mapped = results.map(mapDtoToItem);
-      setOriginalItems(mapped);
-      setItems(mapped);
-    } catch (err) {
-      console.error("❌ Failed to fetch favorite items:", err);
-      setError("حدث خطأ أثناء جلب المنتجات المفضلة.");
-      setOriginalItems([]);
-      setItems([]);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  try {
+    const results = await Promise.all(
+      itemNos.map(async (no) => {
+        const dto = await getItemByItemNo(no);
+        const status = await getItemStatus(no); 
+        return mapDtoToItem(dto, status);
+      })
+    );
+
+    setOriginalItems(results);
+    setItems(results);
+  } catch (err) {
+    console.error("❌ Failed to fetch favorite items:", err);
+    setError("حدث خطأ أثناء جلب المنتجات المفضلة.");
+    setOriginalItems([]);
+    setItems([]);
+  } finally {
+    setLoading(false);
+  }
+}, []);
+
 
   useEffect(() => {
     fetchItems();

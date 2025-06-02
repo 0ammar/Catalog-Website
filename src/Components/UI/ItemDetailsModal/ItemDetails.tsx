@@ -15,6 +15,7 @@ import Image from 'next/image';
 import Loading from '@/Components/UI/Loading/Loading';
 import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid';
 import { HeartIcon as HeartOutline } from '@heroicons/react/24/outline';
+import Modal from '../Modal/Modal';
 
 interface Props {
   itemNo: string;
@@ -43,6 +44,9 @@ const ItemDetails = ({ itemNo, onClose, onStatusUpdate }: Props) => {
   const { isAdmin } = useAuth();
   const [showStatusMenu, setShowStatusMenu] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
+
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [pendingStatusId, setPendingStatusId] = useState<string | null>(null);
 
   useEffect(() => {
     const favList = getFavouriteList();
@@ -101,7 +105,15 @@ const ItemDetails = ({ itemNo, onClose, onStatusUpdate }: Props) => {
               status={itemStatus?.id}
               statuses={statuses}
               loading={false}
-              onChange={code => changeStatus(code, onStatusUpdate)}
+              onChange={(code) => {
+                if (code === '1') {
+                  setPendingStatusId(code);
+                  setConfirmModalOpen(true);
+                } else {
+                  changeStatus(code, onStatusUpdate);
+                }
+              }}
+
             />
           </div>
         )}
@@ -178,6 +190,24 @@ const ItemDetails = ({ itemNo, onClose, onStatusUpdate }: Props) => {
       {previewImage && fullImageUrl && (
         <ImageViewer imageUrl={fullImageUrl} onClose={closeImage} />
       )}
+
+      <Modal
+        isOpen={confirmModalOpen}
+        title="🟡 تأكيد الإجراء"
+        message="هل تريد بالتأكيد إخفاء هذا المنتج؟"
+        onConfirm={() => {
+          if (pendingStatusId) {
+            changeStatus(pendingStatusId, onStatusUpdate);
+          }
+          setConfirmModalOpen(false);
+          setPendingStatusId(null);
+        }}
+        onCancel={() => {
+          setConfirmModalOpen(false);
+          setPendingStatusId(null);
+        }}
+      />
+
     </>
   );
 };

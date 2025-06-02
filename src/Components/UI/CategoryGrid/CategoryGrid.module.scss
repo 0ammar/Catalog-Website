@@ -6,11 +6,11 @@
   margin: $space-md auto $space-md;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  padding: 10px 0 0 0;
   gap: 20px;
 
   @include respond-lg {
     grid-template-columns: repeat(3, 1fr);
-    
   }
 
   @include respond-md {

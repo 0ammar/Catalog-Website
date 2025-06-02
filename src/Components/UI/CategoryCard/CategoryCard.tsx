@@ -62,14 +62,19 @@ const CategoryCard = ({
         tabIndex={0}
       >
         <div className={styles.imgTitle}>
-          <Image
-            className={styles.categImg}
-            src={imageUrl}
-            alt={name}
-            width={100}
-            height={100}
-            priority
-          />
+          <div className={styles.categImgWrapper}>
+            <div className={styles.categImgWrapper}>
+              <Image
+                src={imageUrl}
+                alt={name}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 200px"
+                style={{ objectFit: 'contain' }}
+                priority
+              />
+            </div>
+
+          </div>
           <h2 className={styles.categTitle}>{name}</h2>
         </div>
 

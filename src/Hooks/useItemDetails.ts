@@ -139,7 +139,6 @@ export default function useItemDetails(itemNo: string) {
   };
 
   const updateDescription = async (newDesc: string): Promise<void> => {
-    if (!newDesc.trim()) return;
 
     try {
       await updateItemDescription(itemNo, newDesc);
