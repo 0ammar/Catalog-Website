@@ -52,7 +52,7 @@ const FavouriteItemsPage = () => {
               borderRadius: '8px',
               transition: '0.2s',
               color: '#A01515',
-              alignSelf: 'flex-start'
+              alignSelf: 'center'
             }}
             title="تفريغ المفضلة"
           >
