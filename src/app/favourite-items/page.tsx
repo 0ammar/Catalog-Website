@@ -93,7 +93,7 @@ const FavouriteItemsPage = () => {
       <Modal
         isOpen={isModalOpen}
         title="تأكيد الحذف"
-        message="هل أنت متأكد أنك تريد تفريغ قائمة المفضلة بالكامل؟"
+        message="هل أنت متأكد أنك تريد تفريغ قائمة المفضلة؟"
         onConfirm={() => {
           clearFavourites();
           setIsModalOpen(false);
