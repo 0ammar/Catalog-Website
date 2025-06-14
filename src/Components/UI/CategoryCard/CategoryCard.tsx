@@ -46,12 +46,21 @@ const CategoryCard = ({
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && uploadImage) {
-      await uploadImage(file);
-      await refetch?.();
-    }
-  };
+  const file = e.target.files?.[0];
+
+  if (!file) return;
+
+  if (file.size > 500 * 1024) { // 500KB
+    alert("❌ حجم الصورة يجب أن لا يتجاوز 500KB");
+    return;
+  }
+
+  if (uploadImage) {
+    await uploadImage(file);
+    await refetch?.();
+  }
+};
+
 
   return (
     <>
@@ -82,7 +91,7 @@ const CategoryCard = ({
           <div className={styles.buttonsWrapper} onClick={(e) => e.stopPropagation()}>
             <FiRefreshCw
               className={styles.icon}
-              title="Delete"
+              title="Reset"
               onClick={handleDeleteClick}
             />
             <FiUploadCloud

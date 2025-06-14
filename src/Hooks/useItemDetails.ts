@@ -126,10 +126,19 @@ export default function useItemDetails(itemNo: string) {
   };
 
   const uploadImages = async (files: File[]) => {
-    await uploadItemImages(itemNo, files);
+  const validFiles = files.filter(file => file.size <= 500 * 1024);
+
+  if (validFiles.length !== files.length) {
+    alert("❌ بعض الصور حجمها أكبر من 500KB وتم تجاهلها.");
+  }
+
+  if (validFiles.length > 0) {
+    await uploadItemImages(itemNo, validFiles);
     await fetchItemDetails();
     router.refresh();
-  };
+  }
+};
+
 
   const deleteImages = async (imageUrls: string[]) => {
     const names = imageUrls.map((url) => url.split("/").pop() ?? "");

@@ -3,9 +3,12 @@ import { useRouter } from 'next/navigation';
 import { login } from '@/Services/authServices';
 
 export default function useAuth() {
+
   const router = useRouter();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
@@ -14,6 +17,7 @@ export default function useAuth() {
 
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
+      console.log(`This is the payload: ${payload}`)
       const adminStatus = payload?.role === 'Admin';
       setIsAdmin(adminStatus);
       localStorage.setItem('isAdmin', JSON.stringify(adminStatus));

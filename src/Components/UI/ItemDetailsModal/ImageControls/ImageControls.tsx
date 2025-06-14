@@ -34,22 +34,31 @@ const ImageControls = ({
   const [description, setDescription] = useState('');
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files?.length) return;
+  const files = e.target.files;
+  if (!files?.length) return;
 
-    setUploading(true);
-    try {
-      const fileList = Array.from(files);
-      await uploadItemImages(itemId, fileList);
+  const fileList = Array.from(files);
+  const maxSize = 500 * 1024; // 500KB
+  const validFiles = fileList.filter(file => file.size <= maxSize);
 
-      toast.success('✅ تم رفع الصور بنجاح');
-      onUploadSuccess?.();
-    } catch {
-      toast.error('❌ فشل في رفع الصور');
-    } finally {
-      setUploading(false);
-    }
-  };
+  if (validFiles.length !== fileList.length) {
+    alert("❌ بعض الصور حجمها أكبر من 500KB وتم تجاهلها.");
+  }
+
+  if (validFiles.length === 0) return;
+
+  setUploading(true);
+  try {
+    await uploadItemImages(itemId, validFiles);
+    toast.success('✅ تم رفع الصور بنجاح');
+    onUploadSuccess?.();
+  } catch {
+    toast.error('❌ فشل في رفع الصور');
+  } finally {
+    setUploading(false);
+  }
+};
+
 
   const toggleImage = (src: string) => {
     setSelectedImages((prev) =>
