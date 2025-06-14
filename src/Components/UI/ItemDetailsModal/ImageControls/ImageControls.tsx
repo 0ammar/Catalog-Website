@@ -38,7 +38,7 @@ const ImageControls = ({
   if (!files?.length) return;
 
   const fileList = Array.from(files);
-  const maxSize = 500 * 1024; // 500KB
+  const maxSize = 500 * 1024;
   const validFiles = fileList.filter(file => file.size <= maxSize);
 
   if (validFiles.length !== fileList.length) {

@@ -46,21 +46,22 @@ const CategoryCard = ({
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0];
+    const file = e.target.files?.[0];
 
-  if (!file) return;
+    if (!file) return;
 
-  if (file.size > 500 * 1024) { // 500KB
-    alert("❌ حجم الصورة يجب أن لا يتجاوز 500KB");
-    return;
-  }
+    if (file.size > 500 * 1024) { // 500KB
+      alert("❌ حجم الصورة يجب أن لا يتجاوز 500KB");
+      return;
+    }
 
-  if (uploadImage) {
-    await uploadImage(file);
-    await refetch?.();
-  }
-};
+    if (uploadImage) {
+      await uploadImage(file);
+      await refetch?.();
+    }
+  };
 
+  console.log("🧩 Rendering CategoryCard image:", imageUrl);
 
   return (
     <>
@@ -73,6 +74,7 @@ const CategoryCard = ({
         <div className={styles.imgTitle}>
           <div className={styles.categImgWrapper}>
             <div className={styles.categImgWrapper}>
+
               <Image
                 src={imageUrl}
                 alt={name}

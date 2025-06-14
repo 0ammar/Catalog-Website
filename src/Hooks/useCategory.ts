@@ -106,16 +106,28 @@ export default function useCategory(path: string[] = []) {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+const currentData: CategoryItem[] = useMemo(() => {
+  const addFullImageUrl = (items: CategoryItem[]) =>
+    items.map((item) => {
+      const finalUrl = item.imageUrl.startsWith("http")
+        ? item.imageUrl
+        : `${process.env.NEXT_PUBLIC_API_URL}/CategoriesImages/${item.imageUrl}`
 
-  const currentData: CategoryItem[] = useMemo(() => {
-    switch (level) {
-      case 0: return groups;
-      case 1: return subOnes;
-      case 2: return subTwos;
-      case 3: return subThrees;
-      default: return [];
-    }
-  }, [level, groups, subOnes, subTwos, subThrees]);
+      return {
+        ...item,
+        imageUrl: finalUrl,
+      };
+    });
+
+  switch (level) {
+    case 0: return addFullImageUrl(groups);
+    case 1: return addFullImageUrl(subOnes);
+    case 2: return addFullImageUrl(subTwos);
+    case 3: return addFullImageUrl(subThrees);
+    default: return [];
+  }
+}, [level, groups, subOnes, subTwos, subThrees]);
+
 
   const selectedCategoryName = useMemo(() => {
     if (level === 1) {
